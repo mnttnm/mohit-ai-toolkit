@@ -1,4 +1,0 @@
-interface:
-  display_name: "Lenny Research"
-  short_description: "Help with Lenny Research workflows"
-  default_prompt: "Use $lenny-research to help with this task."

@@ -1,4 +1,0 @@
-interface:
-  display_name: "UI Autoimprove"
-  short_description: "Help with UI Autoimprove workflows"
-  default_prompt: "Use $ui-autoimprove to help with this task."

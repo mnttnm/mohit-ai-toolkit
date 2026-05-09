@@ -1,4 +1,0 @@
-interface:
-  display_name: "Product Design Craft"
-  short_description: "Help with Product Design Craft workflows"
-  default_prompt: "Use $product-design-craft to help with this task."
