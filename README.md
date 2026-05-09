@@ -29,22 +29,34 @@ These are templates, not ready-to-run personal configs. Replace placeholders suc
 
 ### With `npx skills`
 
-Install from GitHub with the `skills` CLI:
+Install interactively from GitHub with the `skills` CLI:
 
 ```bash
 npx skills add mnttnm/mohit-ai-toolkit
 ```
 
-Install a specific skill:
+Install all skills globally for Claude Code and Codex without prompts:
 
 ```bash
-npx skills add mnttnm/mohit-ai-toolkit --skill product-ui
+npx skills add mnttnm/mohit-ai-toolkit --skill '*' --agent claude-code --agent codex --global --copy --yes
 ```
 
-Install for specific agents:
+Install a specific skill globally:
 
 ```bash
-npx skills add mnttnm/mohit-ai-toolkit --agent claude-code --agent codex
+npx skills add mnttnm/mohit-ai-toolkit --skill product-ui --agent claude-code --agent codex --global --copy --yes
+```
+
+Install for only Claude Code:
+
+```bash
+npx skills add mnttnm/mohit-ai-toolkit --skill product-ui --agent claude-code --global --copy --yes
+```
+
+Install for only Codex:
+
+```bash
+npx skills add mnttnm/mohit-ai-toolkit --skill product-ui --agent codex --global --copy --yes
 ```
 
 List the available skills without installing:
@@ -53,7 +65,7 @@ List the available skills without installing:
 npx skills add mnttnm/mohit-ai-toolkit --list
 ```
 
-The `skills` CLI supports multiple coding agents, including Claude Code and Codex. See the [`vercel-labs/skills`](https://github.com/vercel-labs/skills) project for CLI details.
+The `skills` CLI supports multiple coding agents, including Claude Code and Codex. For global installs, Claude Code receives skills under `~/.claude/skills`, while Codex receives them under `~/.agents/skills`. See the [`vercel-labs/skills`](https://github.com/vercel-labs/skills) project for CLI details.
 
 ### Manual Install
 

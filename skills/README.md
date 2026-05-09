@@ -14,22 +14,34 @@ Each skill also includes `agents/openai.yaml` so Codex can show a display name, 
 
 ### With `npx skills`
 
-Install all skills from this repo:
+Install interactively from this repo:
 
 ```bash
 npx skills add mnttnm/mohit-ai-toolkit
 ```
 
-Install one skill:
+Install all skills globally for Claude Code and Codex without prompts:
 
 ```bash
-npx skills add mnttnm/mohit-ai-toolkit --skill product-ui
+npx skills add mnttnm/mohit-ai-toolkit --skill '*' --agent claude-code --agent codex --global --copy --yes
 ```
 
-Install for selected agents:
+Install one skill globally:
 
 ```bash
-npx skills add mnttnm/mohit-ai-toolkit --agent claude-code --agent codex
+npx skills add mnttnm/mohit-ai-toolkit --skill product-ui --agent claude-code --agent codex --global --copy --yes
+```
+
+Install for only Claude Code:
+
+```bash
+npx skills add mnttnm/mohit-ai-toolkit --skill product-ui --agent claude-code --global --copy --yes
+```
+
+Install for only Codex:
+
+```bash
+npx skills add mnttnm/mohit-ai-toolkit --skill product-ui --agent codex --global --copy --yes
 ```
 
 List available skills:
