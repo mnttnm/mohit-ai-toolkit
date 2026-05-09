@@ -1,0 +1,128 @@
+version = 1
+id = "codex-morning-digest"
+kind = "cron"
+name = "Codex Morning Digest"
+prompt = """
+Create my daily Codex morning work digest and send it to my email account.
+
+Goal:
+Help me start the day by quickly understanding what meaningful Codex work happened yesterday and early today, what needs my attention, what can be ignored, and what I should act on first.
+
+Delivery:
+- Send the final digest to: <your-email-id>
+- Use email as the daily notification medium, not as the rendered digest surface.
+- The email must be plain text and easy to scan.
+- The email body must include:
+  - A brief `What's priority today` summary with the top 3-5 actions.
+  - A protected link to the rendered digest.
+  - A protected link to the launcher.
+  - A protected link to the Markdown report.
+- Do not send inline HTML through email if the connector or provider flattens HTML bodies into plain text.
+- Do not use source-control file-view links as the primary email links when they show source instead of rendered content.
+- Create a local email-ready HTML report file for the exact digest.
+- Create a local Markdown report file for offline reference and future review.
+- Store local reports in the relevant daily notes folder when one exists, otherwise under `<your-digest-output-folder>/YYYY-MM-DD/`.
+- Use filenames like `daily-codex-work-digest-YYYY-MM-DD.html` and `daily-codex-work-digest-YYYY-MM-DD.md`.
+- Subject format: Daily Codex Work Digest - YYYY-MM-DD
+
+Private archive:
+- Use source control only as a private backup/archive, not as the primary review surface in email.
+- Maintain a private archive repo at `<your-projects-log>`.
+- After generating the local artifacts, copy them into `reports/YYYY/MM/YYYY-MM-DD/` as:
+  - `index.html` for the email-style digest view
+  - `digest.md` for the offline Markdown report
+  - `launcher.html` for the Codex priority launcher
+- Update the archive landing page when adding a new day.
+- Commit and push the new day when git auth is available.
+- Keep the archive private unless a sanitized public report mode is explicitly requested.
+
+Protected rendered links:
+- Use a protected deployment, private preview, or authenticated static host as the primary rendered digest delivery route.
+- Do not deploy raw static digest folders publicly unless access protection is verified with an unauthenticated request.
+- Prefer an app-level token gate when native deployment protection is unavailable:
+  - Store generated digest files under `content/`.
+  - Route all paths through a serverless function or equivalent gate.
+  - Require a high-entropy `<DIGEST_ACCESS_TOKEN>` from a runtime environment variable.
+  - Accept `?token=<token>` once, set a secure HttpOnly cookie, then redirect to the clean path.
+  - Deploy with the token as a runtime environment variable.
+  - Verify the base URL returns `401` without a token.
+  - Verify tokenized digest, launcher, and Markdown URLs each return `200` before emailing links.
+  - If verification fails, do not email protected links. Fix deployment/protection first, or explicitly mark delivery blocked.
+- Include only verified protected links for digest, launcher, and Markdown report in the email note.
+- Include private archive links only in the local Markdown report, not in the email note, unless explicitly requested.
+
+Template source of truth:
+- Render the email body using `<your-template-folder>/email-template.html`.
+- Render the launcher HTML using `<your-template-folder>/launcher-template.html`.
+- Follow the design rules and chip/action variants in `<your-template-folder>/template-guide.md`.
+- Do not refactor the template structure; fill its Mustache-style tokens and repeating sections.
+- Before rendering, strip or ignore the templates' leading instructional HTML comments.
+- Do not expand Mustache tokens inside comments.
+- After rendering every HTML artifact, assert that no `{{...}}` tokens and no template-guide/comment prose remain.
+- Regenerate before deploying if any unreplaced tokens or template-comment prose remain.
+- Use Codex action variants such as:
+  - Email card action: `<a href="codex://threads/<thread-id>">Open thread &rarr;</a>`
+  - Launcher actions: `<a class="open" href="codex://threads/<thread-id>">Open</a>` and `<button class="copy" data-cmd="codex://threads/<thread-id>">Copy URI</button>`
+
+Time window:
+- Review Codex sessions from yesterday and early today.
+- Include sessions after midnight if they logically belong to the previous working day.
+- Interpret dates in my local timezone.
+
+Selection rules:
+- Be selective. Do not include every session.
+- Include sessions that are useful for planning the day, reviewing work, continuing a project, or making a decision.
+- Compress purely logistical items like deploys, branch creation, previews, uploads, or setup unless they affect a decision I need to make.
+- Do not over-explain completed operational sessions unless there is a risk, blocker, or follow-up.
+
+Deduplication rules:
+- Assign each project/thread cluster to exactly one primary section.
+- Do not repeat the same project under both "Needs my attention" and "Waiting on my decision".
+- If an item both needs attention and waits on a decision, put it in "Needs my attention today" and add a short "Decision needed" flag inside that same card.
+- Use "Waiting on my decision" only for items where no execution should continue until I choose between concrete options.
+- If a completed/logistical item is already summarized inside a higher-priority project, do not list it again under completed/reference.
+- Merge related sessions into one item when they represent one workstream.
+
+Group the email and Markdown into:
+1. Needs my attention today
+2. Waiting on my decision
+3. Conditional / only if active
+4. Completed / no immediate action
+5. Reference only, if useful
+
+For each important item, include:
+- Project
+- What happened
+- Why it matters
+- My next action
+- Thread: codex://threads/<thread-id>
+
+Flag clearly:
+- Uncommitted work
+- Unpushed branches
+- Failed or incomplete validation
+- Missing secrets/config
+- Subjective review needs, such as UI/product/taste decisions
+- Work that should be continued in a PR, issue, or follow-up session
+
+Markdown report format:
+- Use clean Markdown headings and short bullets.
+- Include the same primary sections as the email.
+- Include raw `codex://` thread links visibly when available.
+- Include local artifact paths for the HTML report and launcher when present.
+- Keep the Markdown useful as an offline reference, with enough detail to understand why each item mattered.
+- Do not duplicate projects across sections; follow the same single-primary-section rule as the email.
+
+Tone:
+- Direct, practical, and decision-focused.
+- No generic productivity advice.
+- No long narrative.
+- Focus only on what I should review, decide, continue, or ignore.
+"""
+status = "ACTIVE"
+rrule = "FREQ=DAILY;BYHOUR=8;BYMINUTE=0"
+model = "gpt-5.5"
+reasoning_effort = "high"
+execution_environment = "worktree"
+cwds = ["<your-workspace>"]
+

@@ -1,0 +1,128 @@
+version = 1
+id = "weekly-work-journal"
+kind = "heartbeat"
+name = "Weekly Work Journal"
+prompt = """
+Review my last 7 days of work and generate three artifacts:
+
+1. A combined Markdown weekly update covering all updates across all projects.
+2. A combined HTML visual weekly digest covering all updates across all projects.
+3. A separate Markdown update focused only on work related to `<your-client-name>`.
+
+Use these sources in priority order whenever available:
+
+1. Connected deployment activity for projects, releases, previews, and live work.
+2. Connected GitHub activity and repository context.
+3. Local git history across relevant repos.
+4. Existing thread context for continuity.
+
+For the client-specific artifact, use this directory path to identify related projects and work:
+
+`<your-client-workspace>`
+
+Focus on what actually moved forward: shipped work, meaningful improvements, new projects started, business impact, and creative or product-focused progress. Avoid technical detail unless it is needed to explain the value of the work.
+
+Do not lead with commits, PRs, deployments, branches, or internal process. Use those only as quiet supporting signals when helpful.
+
+The writing should be simple, direct, and easy to consume. Avoid jargon, inflated claims, witty phrasing, complex sentences, and changelog-style language.
+
+Do not invent intent, business impact, metrics, next steps, or open questions. Only include claims that can be reasonably inferred from deployment activity, GitHub activity, local git history, project files, or existing thread context. If a point is uncertain, either omit it or phrase it conservatively.
+
+## Artifact 1: Combined Markdown Weekly Update
+
+Create a polished Markdown update covering all work across all projects.
+
+This should include:
+
+- A strong title.
+- A short weekly summary.
+- A top-level overview of all projects worked on.
+- A note on any new projects started.
+- Project-wise or theme-wise sections.
+- For each section, explain:
+  - What shipped or improved.
+  - Why it mattered, using conservative language grounded in the source evidence.
+  - What skill or type of work was applied.
+  - Any relevant link where the work can be checked.
+- A short closing reflection.
+- 3 candidate social post blurbs.
+
+Write this for potential clients and employers. Keep it slightly personal, but still clear and professional.
+
+## Artifact 2: Combined HTML Visual Weekly Digest
+
+Create or update a clean standalone HTML visual digest covering all work across all projects.
+
+Use a compact, non-repetitive structure:
+
+1. Hero summary
+   Give the reader the value of the week in the first paragraph. Mention the main projects once, only if needed for context. Include a one-sentence weekly summary that can be safely inferred from the sources.
+
+2. Project-wise updates
+   This is the main content section. Keep each update short, direct, and easy to scan.
+
+   For each project or theme, include:
+   - What changed.
+   - Before / After, only when both sides are clearly supported by the source material.
+   - Why it matters, phrased as a conservative product or business benefit.
+   - Craft applied, using plain labels such as product workflow design, interaction cleanup, QA, accessibility, AI workflow shaping, documentation, or editorial systems.
+   - A proof link when available from deployment history, GitHub, or another reliable source.
+
+3. Links to check the work
+   Include live projects, previews, deployments, GitHub work, or other useful references whenever available. Prefer adding proof links inside the project rows first. Only add a separate links section if it adds convenience and does not repeat too much content.
+
+4. Closing takeaway
+   End with one short, clear takeaway about the week.
+
+Do not create separate overview and stats sections if they repeat the same project names or facts from the project updates.
+
+Only include stats when they add new meaning and can be supported by the sources. Avoid generic counts like "projects moved forward", "live updates", or "new starts" if those facts are already clear elsewhere. Do not repeat the same numbers in the hero and again later.
+
+If there were no meaningful new projects started, mention that once in the hero or closing, not as a standalone repeated section.
+
+Avoid speculative sections such as "next steps", "open questions", or "judgment calls" unless the sources explicitly contain that information.
+
+The visual style should be clean, readable, premium, and creative-minimal. Use strong typography, generous spacing, clear labels, and a summary-first layout.
+
+Avoid dense dashboards, metric-first layouts, dark SaaS styling, warm beige journal styling, cryptic copy, witty language, over-explaining, and repeated content blocks.
+
+## Artifact 3: Client Markdown Update
+
+Create a separate Markdown document containing only work related to `<your-client-name>`.
+
+Use `<your-client-workspace>` to identify the relevant projects and local git history.
+
+This update is for the main client stakeholder. The update should stay high-level and business-focused.
+
+The client update should include:
+
+- A clear title.
+- A short executive summary.
+- A top-level overview of client projects worked on.
+- A note on any new client projects started.
+- Project-wise updates.
+- For each project, explain:
+  - What was completed or improved.
+  - Why it matters for the business, product, or users, using conservative language grounded in the source evidence.
+  - Any visible result, release, or link where the work can be checked.
+- A short closing section with the main takeaway from the week.
+
+Keep the tone client-ready, practical, and straightforward. The stakeholder should be able to read it quickly and understand what progress was made without needing extra technical context.
+
+## Final Verification
+
+Before notifying me, verify that all three artifacts are:
+
+- Easy to scan.
+- Focused on meaningful progress and shipped outcomes.
+- Written for the right audience.
+- Simple, direct, and not overly technical.
+- Organized clearly by project or theme.
+- Supported by links where practical.
+- Not repeating the same project list, stats, or summary points across multiple sections.
+- Free from unsupported claims, invented metrics, speculative next steps, or inferred intent that is not grounded in the available sources.
+"""
+status = "ACTIVE"
+rrule = "FREQ=WEEKLY;BYDAY=SU;BYHOUR=18;BYMINUTE=0"
+target_thread_id = "<codex-thread-id>"
+

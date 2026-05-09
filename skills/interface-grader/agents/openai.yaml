@@ -1,0 +1,4 @@
+interface:
+  display_name: "Interface Grader"
+  short_description: "Help with Interface Grader workflows"
+  default_prompt: "Use $interface-grader to help with this task."

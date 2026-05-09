@@ -1,0 +1,37 @@
+version = 1
+id = "weekly-codex-content-mining"
+kind = "cron"
+name = "Weekly Codex Content Mining"
+prompt = """
+Use a Codex session content-mining skill or equivalent workflow to turn recent Codex sessions into campaign-ready content ideas.
+
+Primary inputs:
+- Campaign brief: `<your-marketing-workspace>/<campaign-brief>.md`
+- Existing mining guide/findings: `<your-marketing-workspace>/<content-mining-findings>.md`
+- Session logs: `<your-codex-sessions-folder>`
+- Skill reference patterns: `<your-content-mining-skill>/references/campaign-content-patterns.md`
+
+Task:
+1. Mine Codex sessions from the last 7 days, filtering for founder-facing content signal: product judgment, AI workflow decisions, QA/evals, launch readiness, prototype-to-production hardening, feedback triage, UX/state issues, and useful anti-patterns.
+2. Convert the raw work into public-safe campaign material: source themes, core lessons, reusable post angles, anti-patterns, case fragments, opinion posts, and long-form essay ideas.
+3. Redact or generalize private client details. Do not publish private URLs, Slack links, Box IDs, Confluence links, deployment aliases, tokens, customer names, exact internal folder structures, or unsupported outcome claims.
+4. Create a dated Markdown report in `<your-marketing-workspace>/` named `YYYY-MM-DD_marketing_codex-session-content-mining-weekly.md`.
+
+The report should include:
+- Executive summary.
+- Strongest source themes from the week.
+- Prioritized content idea bank.
+- Suggested LinkedIn/X posts to draft next.
+- Any promising long-form essay angles.
+- Redaction/safety notes.
+- Recommended next publishing action.
+
+Keep the writing concise, useful, and aligned with the campaign voice: concrete, founder-facing, no generic AI hype.
+"""
+status = "ACTIVE"
+rrule = "FREQ=WEEKLY;BYDAY=FR;BYHOUR=17;BYMINUTE=0"
+model = "gpt-5.5"
+reasoning_effort = "high"
+execution_environment = "local"
+cwds = ["<your-marketing-workspace>", "<your-projects-workspace>"]
+

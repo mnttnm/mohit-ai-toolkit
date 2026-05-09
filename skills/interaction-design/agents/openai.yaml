@@ -1,0 +1,4 @@
+interface:
+  display_name: "Interaction Design"
+  short_description: "Help with Interaction Design workflows"
+  default_prompt: "Use $interaction-design to help with this task."

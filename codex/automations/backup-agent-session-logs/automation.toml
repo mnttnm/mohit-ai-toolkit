@@ -1,0 +1,23 @@
+version = 1
+id = "backup-agent-session-logs"
+kind = "cron"
+name = "Backup Agent Session Logs"
+prompt = """
+Back up local agent session logs to the private repository at `<your-session-log-backup-repo>`.
+
+Run `./nightly-backup.sh` from that repository.
+
+Report whether a new commit was created and pushed, or include the command error output if the backup fails.
+
+Safety:
+- Keep the backup repository private.
+- Do not print raw session content in the final status unless needed to explain a failure.
+- Do not upload logs to a public repository.
+"""
+status = "ACTIVE"
+rrule = "FREQ=DAILY;BYHOUR=0;BYMINUTE=0;BYSECOND=0"
+model = "gpt-5.4"
+reasoning_effort = "low"
+execution_environment = "local"
+cwds = ["<your-session-log-backup-repo>"]
+

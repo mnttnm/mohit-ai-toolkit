@@ -1,0 +1,4 @@
+interface:
+  display_name: "Product UI"
+  short_description: "Help with Product UI workflows"
+  default_prompt: "Use $product-ui to help with this task."
