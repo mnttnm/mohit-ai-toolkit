@@ -1,4 +1,0 @@
-interface:
-  display_name: "Designing Dashboards"
-  short_description: "Help with Designing Dashboards workflows"
-  default_prompt: "Use $designing-dashboards to help with this task."

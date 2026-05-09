@@ -1,4 +1,0 @@
-interface:
-  display_name: "UX Patterns"
-  short_description: "Help with UX Patterns workflows"
-  default_prompt: "Use $ux-patterns to help with this task."

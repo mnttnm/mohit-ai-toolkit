@@ -1,4 +1,0 @@
-interface:
-  display_name: "Harvest Feed"
-  short_description: "Help with Harvest Feed workflows"
-  default_prompt: "Use $harvest-feed to help with this task."

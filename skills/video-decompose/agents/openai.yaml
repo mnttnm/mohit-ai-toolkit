@@ -1,4 +1,0 @@
-interface:
-  display_name: "Video Decompose"
-  short_description: "Help with Video Decompose workflows"
-  default_prompt: "Use $video-decompose to help with this task."
