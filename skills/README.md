@@ -12,6 +12,34 @@ Each skill also includes `agents/openai.yaml` so Codex can show a display name, 
 
 ## Install
 
+### With `npx skills`
+
+Install all skills from this repo:
+
+```bash
+npx skills add mnttnm/mohit-ai-toolkit
+```
+
+Install one skill:
+
+```bash
+npx skills add mnttnm/mohit-ai-toolkit --skill product-ui
+```
+
+Install for selected agents:
+
+```bash
+npx skills add mnttnm/mohit-ai-toolkit --agent claude-code --agent codex
+```
+
+List available skills:
+
+```bash
+npx skills add mnttnm/mohit-ai-toolkit --list
+```
+
+### Manual Install
+
 Copy the skill folders you want into your agent's skills directory.
 
 Claude-style agents:
@@ -40,7 +68,7 @@ Restart the agent session after copying.
 
 | Skill | Use it for |
 | --- | --- |
-| `dashboard` | Designing modern, actionable dashboards through requirements, strategy, layout, chart selection, and validation. |
+| `designing-dashboards` | Designing modern, actionable dashboards through requirements, strategy, layout, chart selection, and validation. |
 | `harvest-feed` | Turning a work session or conversation into publishable feed entries for a digital garden or content site. |
 | `interaction-design` | Adding microinteractions, motion, loading states, transitions, and useful feedback patterns. |
 | `interface-grader` | Scoring a website, app, or prototype with evidence-backed design quality criteria. |
@@ -54,7 +82,7 @@ Restart the agent session after copying.
 ## Example Prompts
 
 ```text
-Use $dashboard to design a metrics dashboard for a support team.
+Use $designing-dashboards to design a metrics dashboard for a support team.
 ```
 
 ```text
@@ -87,4 +115,3 @@ skill-name/
 ```
 
 `SKILL.md` is the main instruction file. References are loaded only when the workflow needs more detail. Scripts are included when a workflow benefits from deterministic tooling.
-

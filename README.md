@@ -27,7 +27,37 @@ These are templates, not ready-to-run personal configs. Replace placeholders suc
 
 ## Install Skills
 
-Clone the repo:
+### With `npx skills`
+
+Install from GitHub with the `skills` CLI:
+
+```bash
+npx skills add mnttnm/mohit-ai-toolkit
+```
+
+Install a specific skill:
+
+```bash
+npx skills add mnttnm/mohit-ai-toolkit --skill product-ui
+```
+
+Install for specific agents:
+
+```bash
+npx skills add mnttnm/mohit-ai-toolkit --agent claude-code --agent codex
+```
+
+List the available skills without installing:
+
+```bash
+npx skills add mnttnm/mohit-ai-toolkit --list
+```
+
+The `skills` CLI supports multiple coding agents, including Claude Code and Codex. See the [`vercel-labs/skills`](https://github.com/vercel-labs/skills) project for CLI details.
+
+### Manual Install
+
+Clone the repo if you prefer to copy folders yourself:
 
 ```bash
 git clone https://github.com/mnttnm/mohit-ai-toolkit.git
@@ -72,6 +102,10 @@ Restart your agent session after copying so the skills are rediscovered.
 Invoke a skill by name in your prompt:
 
 ```text
+Use $designing-dashboards to design a metrics dashboard for a support team.
+```
+
+```text
 Use $product-ui to redesign this dashboard so it feels polished and production-ready.
 ```
 
@@ -94,16 +128,3 @@ cp -R codex/automations/codex-morning-digest ~/.codex/automations/
 ```
 
 Before running an automation, review its `automation.toml` and fill in your own paths, email, repo names, deployment settings, and workspace locations.
-
-## Public-Safety Notes
-
-The examples are sanitized for public sharing:
-
-- No real API keys, access tokens, passwords, or private keys.
-- No personal local paths.
-- No private repository names.
-- No client names or internal project identifiers.
-- No real Codex thread IDs.
-
-Treat the automation files as templates. Do not paste private session logs, credentials, or client-specific paths into a public fork.
-
