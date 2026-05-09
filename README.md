@@ -51,6 +51,7 @@ The `skills` CLI is from [`vercel-labs/skills`](https://github.com/vercel-labs/s
 
 ```bash
 git clone https://github.com/mnttnm/mohit-ai-toolkit.git
+mkdir -p ~/.claude/skills ~/.agents/skills
 cp -R mohit-ai-toolkit/skills/* ~/.claude/skills/   # Claude Code
 cp -R mohit-ai-toolkit/skills/* ~/.agents/skills/   # Codex
 ```
