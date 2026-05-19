@@ -2,11 +2,11 @@
 
 Reusable AI-agent skills (Claude Code + Codex) and Codex automation templates.
 
-Use this repo if you want better prompts for product UI work, dashboard design, interface critique, video-to-requirements workflows, or recurring Codex automations.
+Use this repo if you want better prompts for ecommerce conversion audits, product UI work, dashboard design, interface critique, video-to-requirements workflows, or recurring Codex automations.
 
 ## Skills
 
-10 skills covering product UI, dashboards, interface grading, UX patterns, interaction design, and more. Each skill is a folder with a `SKILL.md` file plus optional references and scripts.
+11 skills covering ecommerce conversion audits, product UI, dashboards, interface grading, UX patterns, interaction design, and more. Each skill is a folder with a `SKILL.md` file plus optional references and scripts.
 
 See [skills/README.md](skills/README.md) for the catalog and per-skill details.
 
@@ -65,6 +65,8 @@ cp -R mohit-ai-toolkit/skills/* ~/.agents/skills/   # Codex
 Just describe what you want — agents auto-trigger skills based on the description in each `SKILL.md`:
 
 > Design a metrics dashboard for a support team.
+>
+> Audit this Shopify PDP and homepage for mobile-first conversion improvements.
 >
 > Grade this landing page and identify the highest-impact fixes.
 >
