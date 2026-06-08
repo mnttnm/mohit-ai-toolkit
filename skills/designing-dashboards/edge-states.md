@@ -1,81 +1,61 @@
 # Edge States Reference
 
-> **When to use this file**: When handling empty, loading, error, and real-time update states. This file covers first-time experience, no-data scenarios, loading indicators, and error recovery. Critical for production-ready dashboards.
+> **Load when**: handling empty, loading, error, or real-time states — first-run, no-data, slow fetches, failures, freshness.
+
+**These states are not on the "earn every element" menu — they are always required.** Every other widget part (insight, legend, CTA) is included only when it pulls its weight; empty / loading / error are the non-negotiable floor. A widget without them isn't a leaner widget — it's an unfinished one.
+
+Color/typography/motion tokens referenced below live in **[design-system.md](design-system.md)** — reference token names, don't re-list hex.
 
 ---
 
 ## Empty States
 
-### Types of Empty States
 | Type | Context | Goal |
 |------|---------|------|
 | First-time use | New account, no data yet | Guide to first action |
-| User-cleared | Inbox zero, tasks complete | Celebrate achievement |
+| User-cleared | Inbox zero, tasks complete | Celebrate the achievement |
 | No results | Search/filter returns nothing | Help refine or clear |
-| Error-caused | Data failed to load | Explain and recover |
+| Error-caused | Data failed to load | Explain and recover (→ Error States) |
 
-### Empty State Anatomy
 ```
 ┌─────────────────────────────────────────┐
-│                                         │
-│            [Illustration]               │ ← Optional, adds personality
-│                                         │
-│         No data to display yet          │ ← Clear explanation
-│                                         │
-│    Start by adding your first item      │ ← What to do next
-│                                         │
-│         [ Add First Item ]              │ ← Primary CTA
-│                                         │
+│            [Illustration]               │ ← optional, adds personality
+│         No data to display yet          │ ← clear explanation
+│    Start by adding your first item      │ ← what to do next
+│         [ Add First Item ]              │ ← primary CTA
 └─────────────────────────────────────────┘
 ```
 
-### Empty State Best Practices
-1. **Explain what belongs here** - Help users visualize the populated state
-2. **Provide clear next action** - Prominent CTA to create/add
-3. **Add personality appropriately** - Illustrations reduce anxiety
-4. **Pre-populate when possible** - Demo data, templates, samples
-5. **Celebrate completions** - "All caught up!" for cleared states
+**Do:** explain what belongs here (help users picture the populated state); give one prominent next-action CTA; pre-populate with demo data / templates when possible; celebrate completions ("All caught up!"). Reach for an illustration only when it reduces anxiety, not as decoration.
 
-### Examples by Context
 ```
-First-time dashboard:
-"Your dashboard is ready for data!
-Connect your first data source to see insights here.
-[Connect Data Source]"
-
-Search no results:
-"No matches found for 'xyz'
-Try different keywords or [Clear Filters]"
-
-Completion state:
-"All tasks complete!
-Nothing to review right now. Great work!"
+First-time:  "Your dashboard is ready. Connect a data source to see insights. [Connect Source]"
+No results:  "No matches for 'xyz'. Try different keywords or [Clear Filters]"
+Completion:  "All tasks complete. Nothing to review — great work."
 ```
 
 ## Loading States
 
-### Loading Duration Guidelines
+Pick the indicator by *expected* duration — under-indicating feels broken, over-indicating feels slow.
+
 | Duration | Pattern |
 |----------|---------|
 | <200ms | No indicator (feels instant) |
-| 200ms-2s | Spinner in context |
+| 200ms–2s | Spinner in context |
 | >2s | Skeleton screen |
-| Unknown/long | Progress bar + message |
+| Unknown / long | Progress bar + message |
 
-### Skeleton Screens
-Match layout structure of actual content:
+### Skeleton screens
+Mirror the layout of the real content so the page doesn't reflow on load:
 ```
 Loading:                    Loaded:
 ┌─────────────────────┐    ┌─────────────────────┐
 │ ████████████        │    │ Monthly Revenue     │
-│                     │    │                     │
 │ ████████████████    │    │      $1.2M          │
-│                     │    │                     │
 │ ████  ████████████  │    │ ↑ 15% vs last month │
 └─────────────────────┘    └─────────────────────┘
 ```
 
-### Skeleton CSS Pattern
 ```css
 .skeleton {
   background: linear-gradient(90deg,
@@ -84,51 +64,32 @@ Loading:                    Loaded:
     var(--surface-secondary) 100%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
 }
 
 @keyframes shimmer {
-  0% { background-position: 200% 0; }
+  0%   { background-position: 200% 0; }
   100% { background-position: -200% 0; }
 }
 ```
 
-### Progressive Loading
-Load critical data first:
-```
-1. Show skeleton
-2. Load KPI values (most important)
-3. Load charts
-4. Load tables/detail data
-```
+**Progressive loading** — show the skeleton, then fill highest-value first: KPI values → charts → tables/detail.
 
 ## Error States
 
-### Error State Principles
-1. **Never leave users stranded**
-2. **Explain what went wrong** (in human terms)
-3. **Provide resolution path**
-4. **Offer retry or alternative**
-5. **Degrade gracefully** (show cached data if possible)
+Never leave a user stranded. Explain what failed in human terms, give a resolution path (retry or alternative), and **degrade gracefully** — show cached data over nothing.
 
-### Error State Anatomy
 ```
 ┌─────────────────────────────────────────┐
-│                                         │
-│            ⚠️ Error Icon                │
-│                                         │
-│    Unable to load revenue data          │ ← What failed
-│                                         │
-│    We're having trouble connecting      │ ← Why (simplified)
+│            ⚠ Error Icon                 │
+│    Unable to load revenue data          │ ← what failed
+│    We're having trouble connecting      │ ← why (simplified)
 │    to the data source.                  │
-│                                         │
-│    [ Try Again ]  [ View Cached ]       │ ← Resolution options
-│                                         │
-│    Last updated: 2 hours ago            │ ← Context
+│    [ Try Again ]  [ View Cached ]       │ ← resolution options
+│    Last updated: 2 hours ago            │ ← context
 └─────────────────────────────────────────┘
 ```
 
-### Error Types & Responses
 | Error Type | Message Approach | Actions |
 |------------|------------------|---------|
 | Network | "Connection issue" | Retry, offline mode |
@@ -137,18 +98,18 @@ Load critical data first:
 | Server | "Something went wrong" | Retry, contact support |
 | Permission | "Access denied" | Request access |
 
-### Graceful Degradation
+### Graceful degradation ladder
 ```
 Preferred:  Live data
-Fallback 1: Cached data with "Last updated: X" warning
+Fallback 1: Cached data + "Last updated: X" warning
 Fallback 2: Partial data (show what we have)
 Fallback 3: Error state with recovery options
 ```
 
 ## Real-Time Update States
 
-### Timestamp Visibility
-Always show data freshness:
+Always surface data freshness — a live number with no timestamp is untrustworthy.
+
 ```
 ┌─────────────────────────────────────────┐
 │ Live Dashboard              ● Live      │
@@ -156,49 +117,46 @@ Always show data freshness:
 └─────────────────────────────────────────┘
 ```
 
-### Update Indicators
 | State | Indicator |
 |-------|-----------|
-| Live/connected | ● Green dot + "Live" |
+| Live / connected | Green dot + "Live" (`--color-success`) |
 | Updating | Subtle pulse animation |
-| Stale (>expected) | ⚠️ Yellow + timestamp |
-| Disconnected | Red dot + "Reconnecting..." |
+| Stale (> expected) | Warning + timestamp (`--color-warning`) |
+| Disconnected | Error dot + "Reconnecting…" (`--color-error`) |
 
-### Value Change Animation
+Briefly highlight changed values so updates register without jarring — fade from brand-subtle to transparent:
 ```css
-/* Highlight changed values briefly */
 .value-updated {
   animation: highlight 1.5s ease-out;
 }
 
 @keyframes highlight {
-  0% { background-color: rgba(59, 130, 246, 0.3); }
+  0%   { background-color: var(--brand-primary-subtle); }
   100% { background-color: transparent; }
 }
 ```
 
-### Mini-History for Context
-Allow users to see recent changes:
+Give recent changes context where it helps:
 ```
 Current: 156 users
-         ↑ +3 in last 5 min
-
-[View Last Hour ▼]
+         ↑ +3 in last 5 min   [View Last Hour ▼]
 ```
 
 ## Edge Case Handling
 
-### Data Edge Cases
+### Data
 | Case | How to Handle |
 |------|---------------|
-| Zero values | Show "0" not empty |
-| Negative numbers | Clear minus sign, red color |
+| Zero values | Show "0", not empty |
+| Negative numbers | Clear minus sign, error color |
 | Very large numbers | Abbreviate (1.2M, 45K) |
 | Very small numbers | Appropriate precision |
 | Missing data points | Gap in chart + explanation |
 | Single data point | Show value, note "trend unavailable" |
 
-### Display Edge Cases
+> Abbreviation pairs with the numeric-craft rule in [design-system.md](design-system.md): abbreviate for scale, set figures in `tabular-nums` so columns align.
+
+### Display
 | Case | How to Handle |
 |------|---------------|
 | Long text | Truncate + tooltip |
@@ -209,7 +167,7 @@ Current: 156 users
 
 ## State Machine Pattern
 
-Map all possible states:
+Map every state and its transitions — gaps here are where production dashboards break.
 ```
             ┌──────────┐
             │  Empty   │
@@ -230,28 +188,9 @@ Map all possible states:
            Retry succeeds
 ```
 
-## Edge States Checklist
+## Checklist
 
-### Empty States
-- [ ] First-time user experience designed
-- [ ] Search/filter no results handled
-- [ ] Completion state (inbox zero) designed
-- [ ] Each empty state has clear CTA
-
-### Loading States
-- [ ] Appropriate indicator for each duration
-- [ ] Skeleton screens match content layout
-- [ ] Progressive loading implemented
-- [ ] No flash of loading for fast responses
-
-### Error States
-- [ ] All error types have messaging
-- [ ] Recovery path clear
-- [ ] Graceful degradation where possible
-- [ ] Errors logged for debugging
-
-### Real-Time
-- [ ] Timestamp/freshness visible
-- [ ] Connection status indicated
-- [ ] Stale data warning
-- [ ] Update animations subtle
+**Empty** — first-time, no-results, and completion states each designed; each has a clear CTA.
+**Loading** — indicator matched to duration; skeletons mirror content layout; progressive load; no loading flash on fast responses.
+**Error** — every error type messaged; recovery path clear; graceful degradation where possible; errors logged.
+**Real-time** — freshness visible; connection status shown; stale-data warning; update animations subtle.

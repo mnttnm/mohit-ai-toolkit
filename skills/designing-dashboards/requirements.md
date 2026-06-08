@@ -1,398 +1,142 @@
-# Requirements Gathering Reference
+# Requirements Reference
 
-> **When to use this file**: At Checkpoints 1-2 when starting a new dashboard project, gathering functional and visual requirements, or when requirements seem incomplete. This file contains question sequences, conversation patterns, and the complete requirements checklist.
+> **When to use this file**: At the **Clarify** gate — starting a dashboard, scanning the
+> project, and resolving the few ambiguities that genuinely change the design. Pairs with
+> SKILL.md's "First: New or Revamp?" decision and the three-gate flow.
 
----
-
-## Conversation Strategy
-
-### Opening — Functional First
-Start with the three essential questions:
-```
-"I'll help you create an effective dashboard. Let's start with the
-fundamentals:
-
-1. What's the ONE main decision this dashboard should help you make?
-2. Who will be using this dashboard?
-3. What are your 3-5 most important metrics?"
-```
-
-### Then — Visual Preferences (Don't Skip!)
-After functional basics, ALWAYS ask about visual direction:
-```
-"Great! Now let's make sure the dashboard FEELS right too. A few
-questions about the look and feel:
-
-4. **Theme**: Do you prefer light mode, dark mode, or both?
-
-5. **Style**: What feeling should it convey?
-   - Clean & minimal (like Notion, Linear)
-   - Data-rich & detailed (like trading platforms)
-   - Modern & vibrant (like Stripe)
-   - Traditional & corporate (like enterprise software)
-
-6. **Brand**: Any colors, fonts, or guidelines I should follow?
-
-7. **Inspiration**: Any dashboards or designs you've seen that you like?"
-```
+Requirements is a *navigator* move, not an intake form. The goal isn't to fill every
+field — it's to learn what the project already answers, audit what exists, and ask only
+the handful of things that would change what you build.
 
 ---
 
-## Requirements Categories
+## Step 1 — Scan the project (do this before asking anything)
 
-### 1. Purpose & Goals (Required)
-- **Primary objective**: What decision(s) must this dashboard support?
-- **Dashboard type**: Operational, Analytical, Strategic, or Telemetry?
-- **Success criteria**: How will we know it's working?
+The repo answers most "what conventions?" questions for free. Run a light
+**project-context scan** first; it powers both *inherit the vocabulary* and *derive the
+theme* (see SKILL.md Principle 7).
 
-### 2. Users & Context (Required)
-- **Primary users**: Role, technical level
-- **Viewing context**: Desktop, mobile, TV display?
-- **Usage frequency**: Real-time, daily, weekly?
-- **Environment**: Office, control room, on-the-go?
+| Look at | For | Feeds |
+|---|---|---|
+| `package.json` | Chart library (recharts / tremor / chart.js / visx / nivo / echarts), UI primitives (shadcn / MUI / Chakra / Mantine), framework (Next / Vite / Remix) | Chart-lib + component inheritance |
+| `tailwind.config.*` / theme file / CSS `:root` vars | Design tokens — colors, radius, spacing, font family | Theme sourcing (`design-system.md`) |
+| One representative component | Conventions in the wild — TS vs JS, Tailwind vs CSS modules, icon set, file/folder layout, how cards/buttons are composed | Framework + primitive inheritance |
+| Existing dashboard/chart code, if any | Patterns already in use, the baseline to beat | Strategy + visualization |
 
-### 3. Metrics & Data (Required)
-- **Key metrics**: 3-5 most critical numbers
-- **Comparison context**: Targets, history, benchmarks
-- **Data sources**: Where does data originate?
-- **Refresh frequency**: Real-time, hourly, daily?
+**Report what the scan found**, then state your inherit/own stance and ask only where the
+answer would change output:
 
-### 4. Visual Preferences (Required — Don't Skip!)
-- **Theme**: Light mode, dark mode, or both?
-- **Aesthetic**: Minimal, data-dense, modern, corporate?
-- **Brand**: Colors, fonts, logos to incorporate?
-- **Inspirations**: Existing dashboards or designs they like?
-- **Density**: Spacious/clean vs. information-rich?
+> "Scan found Next.js + shadcn/ui + Recharts, and a Tailwind theme with a violet primary
+> and `rounded-lg` cards. I'll build native to that. Want me to match those conventions
+> closely, or push a fresher direction?"
 
-### 5. Constraints (Important)
-- **Technical**: Framework, browser support
-- **Accessibility**: WCAG level, specific needs
-- **Consistency**: Other tools to match?
+If there's no codebase (pure greenfield / mockup), say so and fall back to deriving a
+theme from a described vibe or the light/dark default (`design-system.md`).
 
 ---
 
-## Question Sequence
+## Step 2 — New vs Revamp
 
-### Round 1: Core Purpose (Always Ask)
-- What decision should this help make?
-- Who will use it and how often?
-- What are the 3-5 most important metrics?
+**Revamp → audit the existing dashboard first**, before gathering anything new. Go
+widget by widget and capture, for each:
 
-### Round 2: Metric Context (Always Ask)
-- What's a "good" vs "concerning" value for each metric?
-- What should each metric be compared against?
-- How frequently should data update?
+- **What it shows** — the metric/visual.
+- **What decision it supports** — or whether it supports none.
+- **What's weak** — wrong chart for the data, no insight, dead-end, redundant, buried, or
+  visually flat.
 
-### Round 3: Visual Direction (Always Ask)
-- Light or dark theme preference?
-- Aesthetic direction (minimal/dense/modern/corporate)?
-- Brand colors or fonts to use?
-- Any inspirations or anti-inspirations?
+That audit *is* your requirements for a revamp: it surfaces what to keep, cut, merge, and
+elevate. The old layout is the **baseline to beat, not a template to copy.**
 
-### Round 4: Constraints (Ask If Not Mentioned)
-- Technical requirements?
-- Accessibility needs?
-- Other tools to match?
+**New → go straight to Step 3.** Start from the audience and the questions the dashboard
+must answer.
 
 ---
 
-## Visual Preferences Discovery
+## Step 3 — Clarify only what's ambiguous
 
-**These are NOT optional.** Visual preferences significantly impact the final design and user satisfaction.
+Resolve *genuine* ambiguity, then move. Don't interrogate, don't run a script, and never
+ask a question whose answer wouldn't change what you build. The project scan and the data
+already answer most of it.
 
-### Theme Questions
-```
-"For the visual theme:
-- Do you prefer light mode, dark mode, or should it support both?
-- Any reason to lean one way? (e.g., control room = dark mode)"
-```
+**Must resolve (preference genuinely changes the output):**
+- **Decision** — the one main decision this dashboard should help make.
+- **Audience** — who uses it, how often, in what context (desk / mobile / wall display).
+- **Must-show metrics** — the 1–2 numbers that have to be prominent.
+- **Theme source** — derive from the project, describe a vibe, or default light+dark — and
+  the inherit-vs-own lean (match conventions vs push fresher).
 
-### Aesthetic Questions
-```
-"What feeling should the dashboard convey?
+**Offer options, recommend one (don't open-endedly ask):**
+- Dashboard type (operational / analytical / strategic) — usually inferable; confirm in
+  Strategy.
+- Comparison context per metric (target / prior period / benchmark).
+- Refresh cadence (real-time / periodic / static) when it's unclear.
 
-A) **Clean & Minimal** — Lots of whitespace, simple charts
-   (like Linear, Notion, Stripe)
+**Decide yourself (best practice, no need to ask):** accessibility (WCAG 2.1 AA),
+data-fit and contrast checks, grid/spacing, tabular figures, earned-element gating, chart
+type where the data points to one answer.
 
-B) **Data-Dense** — Maximum information, detailed charts
-   (like Bloomberg Terminal, trading platforms)
+**One opening pass is usually enough.** A quick concept may need a single question; a
+production revamp warrants a fuller round. Scale the ceremony to the task.
 
-C) **Modern & Vibrant** — Bold colors, contemporary feel
-   (like Stripe Dashboard, modern SaaS)
+> Sample opening (adapt, don't recite): *"Before I design — what's the main decision this
+> should drive, who's the audience, and are there one or two metrics that must lead? On
+> the look: derive a theme from your repo, match a product you like, or want a clean
+> light+dark default?"*
 
-D) **Corporate & Conservative** — Professional, traditional
-   (like enterprise software, banking)
+**When the user defers** ("no preference", "just make it good"), don't loop on it — state
+the default you'll apply and show a draft to react to:
 
-Which resonates? Or describe what you're envisioning."
-```
-
-### Brand Questions
-```
-"Do you have brand guidelines I should follow?
-- Primary brand colors?
-- Required fonts?
-- Logos or icons to include?
-- Existing design system?"
-```
-
-### Inspiration Questions
-```
-"Are there any dashboards or designs you've seen that you like?
-- Specific products? (e.g., 'I like how Stripe looks')
-- Screenshots you can share?
-- Anything you specifically want to AVOID?"
-```
-
-### Density Questions
-```
-"How much information should be visible at once?
-
-A) **Focused** — Show only the essentials, reveal detail on demand
-   Best for: Quick status checks, executive views
-
-B) **Balanced** — Key metrics prominent, supporting info visible
-   Best for: Daily operational use
-
-C) **Comprehensive** — Maximum data density, minimal hiding
-   Best for: Power users, analysts, control rooms
-
-Which matches your users' needs?"
-```
+> "I'll derive the theme from your project's tokens (else a clean light+dark default),
+> lead with [metric], and keep it balanced — not sparse, not packed. I'll show a draft;
+> easier to react than to spec."
 
 ---
 
-## Handling Common Responses
+## Watch for
 
-### When User Focuses Only on Data
-```
-User: "Just show me revenue, users, and conversion rate"
-
-Agent: "Perfect, those are great core metrics. I have what I need for
-the data side.
-
-To make sure the dashboard looks right too:
-- Any preference on dark vs. light theme?
-- Should it feel minimal or data-packed?
-- Any brand colors I should use?
-
-Quick answers are fine—this helps me get closer on the first draft."
-```
-
-### When User Says "Make It Look Good"
-```
-User: "Just make it look professional"
-
-Agent: "'Professional' can mean different things! Let me narrow it down:
-
-Would you describe your ideal as more:
-A) Clean and minimal — lots of whitespace, simple charts
-B) Detailed and comprehensive — packed with information
-C) Modern and polished — contemporary feel, subtle animations
-
-And: light background or dark?"
-```
-
-### When User Says "No Preference"
-```
-User: "I don't have a preference on visuals"
-
-Agent: "No problem! Quick gut reactions then:
-
-- Light mode or dark mode? (Light is more common, dark is easier
-  in dim rooms)
-- More whitespace or more information?
-
-If you truly don't mind, I'll default to:
-- Light theme
-- Clean/minimal style
-- Blue accent color
-- Modern rounded cards
-
-I'll show you the design and you can adjust from there. Often easier
-to react than imagine!"
-```
-
-### When User Wants to Skip Visual Questions
-```
-User: "Can we just get to the dashboard?"
-
-Agent: "Absolutely, I'll keep it quick! Just two things so I don't
-have to guess:
-
-1. Light or dark theme?
-2. Packed with info or clean with breathing room?
-
-That's it—then I'll design and show you!"
-```
-
-### When User Provides Inspiration
-```
-User: "I like how Stripe's dashboard looks"
-
-Agent: "Great reference! Stripe is known for:
-- Clean, minimal aesthetic
-- Lots of whitespace
-- Subtle shadows and rounded cards
-- Blue accent color
-- Light theme
-
-I'll aim for that direction. Any aspects of Stripe's style you
-specifically like or dislike?"
-```
+- **"Show everything"** → push for the 1–2 that lead; the rest earn their place or move to
+  a drill-down.
+- **No clear audience** → the dashboard will serve no one well; pin this down.
+- **Conflicting signals** (e.g. "minimal" + "show all 30 metrics") → surface the tension
+  and let the user choose, rather than silently picking.
+- **Project convention vs requested style clash** → flag it, don't silently abide or
+  override (SKILL.md Principle 7).
 
 ---
 
-## Complete Requirements Checklist
+## Output — Requirements brief
 
-| Category | Requirement | Status |
-|----------|-------------|--------|
-| **Purpose** | Primary decision identified | ☐ |
-| **Purpose** | Dashboard type determined | ☐ |
-| **Users** | Primary users identified | ☐ |
-| **Users** | Viewing context known | ☐ |
-| **Metrics** | 3-5 key metrics listed | ☐ |
-| **Metrics** | Comparison context defined | ☐ |
-| **Visual** | Theme preference (light/dark) | ☐ |
-| **Visual** | Aesthetic direction chosen | ☐ |
-| **Visual** | Brand guidelines collected | ☐ |
-| **Visual** | Density preference known | ☐ |
-| **Constraints** | Technical requirements | ☐ |
-
-**Minimum viable**: Purpose + Users + Metrics + Visual Theme + Visual Aesthetic
-
----
-
-## Handling "No Preference" Responses
-
-When users say "no preference" or "whatever you think":
-
-```
-"I can certainly apply best practices, but these choices affect how
-the dashboard feels to use daily. Let me give you a quick either/or:
-
-**Theme**: Light (easier to read) or Dark (easier on eyes in dim rooms)?
-**Feel**: Clean with breathing room, or packed with information?
-
-Even quick gut reactions help me get closer to what you'll love."
-```
-
-If they truly defer:
-```
-"Understood! I'll start with:
-- Light theme (most universally readable)
-- Clean/minimal aesthetic (reduces cognitive load)
-- Your brand colors if provided, otherwise a professional blue palette
-
-I'll show you the design before finalizing so you can adjust anything
-that doesn't feel right."
-```
-
-**Key**: Always state what defaults will be applied so user can override.
-
----
-
-## Red Flags
-
-- "Show everything" → Push for prioritization
-- No clear audience → Dashboard will serve no one well
-- **"Just make it look good"** → Ask for specific visual direction
-- **No visual preferences gathered** → Design will likely miss the mark
-- Conflicting requirements → Resolve before proceeding
-
----
-
-## Completeness Check
-
-Before concluding requirements, verify:
-
-```
-"Let me make sure I have everything:
-
-**Functional:**
-✓ Purpose: [summarize]
-✓ Users: [summarize]
-✓ Metrics: [list with context]
-
-**Visual:**
-✓ Theme: [light/dark/both]
-✓ Style: [aesthetic direction]
-✓ Brand: [colors/fonts or 'flexible']
-✓ Density: [minimal/balanced/dense]
-
-Missing anything? Any other preferences?"
-```
-
----
-
-## Never Skip Visual Preferences
-
-| Functional Requirements | Visual Requirements |
-|------------------------|---------------------|
-| ✓ Purpose | ✓ Theme preference |
-| ✓ Users | ✓ Aesthetic direction |
-| ✓ Metrics | ✓ Brand guidelines |
-| ✓ Comparisons | ✓ Density preference |
-| ✓ Refresh rate | ✓ Inspirations |
-
-**Both columns should be complete before design begins.**
-
----
-
-## Requirements Document Template
+Keep it tight; fill only what's known. Unknowns that don't block design stay blank.
 
 ```markdown
-# Dashboard Requirements: [Project Name]
+# Dashboard Requirements: [Name]
+
+## Context
+- Mode: [New / Revamp]   ·   (Revamp) Audit summary: [keep / cut / elevate per widget]
+- Project scan: [framework · chart lib · UI primitives · theme tokens found]
+- Inherit/own lean: [match conventions / push fresher]
 
 ## Purpose
-- **Type**: [Operational/Analytical/Strategic/Telemetry]
-- **Primary Decision**: [What decision this supports]
-- **Success Criteria**: [How we measure success]
+- Type: [Operational / Analytical / Strategic]  (confirm in Strategy)
+- Primary decision: [what it drives]
 
-## Users
-| Role | Frequency | Device | Context | Technical Level |
-|------|-----------|--------|---------|-----------------|
+## Audience
+| Who | Frequency | Context (desk/mobile/display) | Technical level |
+|-----|-----------|-------------------------------|-----------------|
 
-## Key Metrics
-| Metric | Source | Refresh | Compare Against | Good Value | Alert Threshold |
-|--------|--------|---------|-----------------|------------|-----------------|
+## Metrics
+| Metric | Lead? | Source | Refresh | Compare against |
+|--------|-------|--------|---------|-----------------|
 
-## Visual Preferences
-- **Theme**: [Light / Dark / Both]
-- **Aesthetic**: [Minimal / Data-dense / Modern / Corporate / Custom]
-- **Brand Colors**: [Hex codes or "flexible"]
-- **Brand Fonts**: [Font names or "flexible"]
-- **Density**: [Focused / Balanced / Comprehensive]
-- **Inspirations**: [Products or designs they like]
-- **Avoid**: [Things they specifically don't want]
+## Theme & feel
+- Source: [derive from project / vibe: ___ / default light+dark]
+- Density lean: [focused / balanced / comprehensive]
+- Brand / anti-patterns: [colors, fonts, things to avoid — or "flexible"]
 
 ## Constraints
-- **Technical**: [Framework, browser, etc.]
-- **Accessibility**: [WCAG Level]
-- **Consistency**: [Other tools to match]
-
----
-Confirmed by user: [Yes/No]
-Visual preferences explicitly gathered: [Yes/No]
-Ready for strategy phase: [Yes/No]
+- Technical / accessibility / tools-to-match: [or "none noted"]
 ```
 
----
-
-## Handoff to Strategy Phase
-
-When requirements are complete:
-```
-"Perfect! I have everything needed to design your dashboard:
-
-**I'll create:**
-- [Dashboard type] dashboard
-- [Theme] theme with [aesthetic] feel
-- [Brand color] accent color
-- Focused on [top metric] prominently
-
-**Next step:** I'll propose the strategic approach—dashboard type
-classification and metric prioritization—for your confirmation. Then
-we'll move to visual design.
-
-Ready to proceed to strategy?"
-```
+Hand off to **strategy.md** once the decision, audience, lead metrics, and theme source
+are settled. Everything else can firm up as you design.
