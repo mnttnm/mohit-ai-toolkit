@@ -1,94 +1,94 @@
-# Components Reference
+# Widgets
 
-> **When to use this file**: At Checkpoint 4 when building individual dashboard widgets. Ensures each widget includes all required elements: insight text, legend, context, CTA, tooltips, and states. Prevents dead-end displays.
+> **When to use this file**: While building individual widgets (Layout → build phase).
+> The anatomies, density limits, and squint test live here. Chart→primitive mapping and
+> insight-text taxonomy live in [visualization.md](visualization.md); color tokens live in
+> [design-system.md](design-system.md). This file does not repeat them.
 
 ---
 
-## Core Philosophy: Complete Widgets
+## Widget anatomy is a MENU, not a mandate
 
-Every widget is more than a chart. It's a complete unit of information and action.
+A widget is a composed unit — visual + the interpretation around it. The composition is the
+value; a bare chart with a title is not a dashboard widget. But "composed" is not "kitchen
+sink." Each element below is on the **menu**, and earns its place by the gate beside it.
+Include it when it pulls weight; skip it when it doesn't.
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│  COMPLETE WIDGET =                                          │
-│                                                             │
-│    Chart/Visual                                             │
-│  + Insight Text (what does this mean?)                      │
-│  + Legend (how to read it)                                  │
-│  + Context (vs. target, vs. last period)                    │
-│  + CTA (what can I do next?)                                │
-│  + Interactivity (hover, click, filter)                     │
-│  + States (loading, empty, error)                           │
-└─────────────────────────────────────────────────────────────┘
-```
-
-## Widget Anatomy Template
-
-Every widget should be specified using this structure:
+This is **not** a license to strip. Rich, interpretive widgets are the default and the
+reason a real dashboard beats a generic one. The gate kills *gratuitous* elements
+(boilerplate insight, "View details" CTA), not *valuable* ones. When in doubt on a rich
+widget, keep it.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │ [Icon] Title                              [Filter▼] [⋮] [⤢] │ ← HEADER
 ├─────────────────────────────────────────────────────────────┤
-│ 💡 Insight: "APAC drove 60% of growth, up 34% YoY"         │ ← INSIGHT
+│ 💡 Insight: "APAC drove 60% of growth, up 34% YoY"         │ ← INSIGHT (contained banner — see below)
 ├─────────────────────────────────────────────────────────────┤
-│                                                             │
 │                                                             │
 │                    VISUALIZATION                            │ ← VISUAL
 │                                                             │
-│                                                             │
 ├─────────────────────────────────────────────────────────────┤
-│ ● Series A  ● Series B  ● Series C    vs. Last Quarter     │ ← LEGEND/CONTEXT
+│ ● Series A  ● Series B  ● Series C    vs. Last Quarter     │ ← LEGEND / CONTEXT
 ├─────────────────────────────────────────────────────────────┤
 │                                    [View Full Analysis →]   │ ← CTA
 └─────────────────────────────────────────────────────────────┘
 ```
 
-## Complete Widget Specification
+### Earns-its-place gate
 
-### Required Elements Checklist
+| Element | Include when… | Skip / drop when… |
+|---------|---------------|-------------------|
+| **Title** | Always — name the metric, not the chart type. | (never skipped) |
+| **Insight** | The data has a story the visual doesn't already show — a cause, comparison, anomaly, or implication. | The best you can write restates an axis ("Thursday was highest") or is boilerplate ("steady growth, +2%"). Let the chart speak. |
+| **Visual** | Always — but only if the medium check (visualization.md §1) says a chart beats a number/sentence/table. | The value is a single number or delta — use a KPI tile, not a chart with one bar. |
+| **Legend** | Multiple series that aren't directly labeled. | Single series, or series labeled at the line ends — direct labels beat a legend. |
+| **Context line** | A comparison gives the number meaning — vs. target, vs. last period, vs. benchmark. | There's no honest baseline to compare against. |
+| **CTA** | There's a real, specific next step or drill-down destination ("See 23 pending orders →"). | Only a generic "View details" / "More" fits — that's a dead end; drop it. |
+| **Tooltip** | The chart has per-point detail worth surfacing on hover. | A KPI tile with nothing more to reveal. |
+| **Loading / Empty / Error states** | **ALWAYS — the one true mandate.** Every widget that fetches data needs all three. See [edge-states.md](edge-states.md). | Never. |
 
-| Element | Purpose | Required? |
-|---------|---------|-----------|
-| Title | What is this showing | ✓ Always |
-| Insight text | What does it mean | ✓ When insight exists |
-| Visualization | The data display | ✓ Always |
-| Legend | How to read it | ✓ When multiple series |
-| Context line | Comparison info | ✓ When comparison exists |
-| Primary CTA | Next action | ✓ Always (drill-down) |
-| Secondary actions | Export, expand, etc. | When applicable |
-| Tooltip | Hover details | ✓ Always |
-| Loading state | While fetching | ✓ Always |
-| Empty state | No data | ✓ Always |
-| Error state | Failed to load | ✓ Always |
+The insight type (headline / callout / actionable / comparative) is the **canonical
+taxonomy in [visualization.md §2](visualization.md)** — pick one type per widget; don't
+stack all four. Don't restate it here.
 
-## KPI Cards: Complete Specification
+### Where the insight goes — surfaced vs revealed
 
-### Full KPI Card Anatomy
+An insight is **contained** (a banner, never a loose colored line) and placed by how hard it
+is to read off the data — the full rule, tones, and craft live in
+[design-system.md → Surfacing insights](design-system.md). In short: **non-obvious →
+surfaced** as an always-on banner at the *top* of the card (takeaway → data); **deducible →
+hidden** behind a "Show insights" toggle at the top-right that reveals it at the top and
+closes again. Either way the insight sits up top, so the card bottom is just metadata + the
+CTA (CTA always right).
+
+---
+
+## KPI cards
+
+The workhorse. The "full" anatomy below is the *menu* — a dense grid may want only the
+minimal variant; a hero KPI may want all of it. Match the variant to the widget's job.
+
+### Full KPI card
 ```
 ┌─────────────────────────────────────────┐
-│ ◉ Monthly Revenue                    ⋮  │ ← Icon + Label + Actions menu
+│ ◉ Monthly Revenue                    ⋮  │ ← Icon + label + actions menu
 ├─────────────────────────────────────────┤
-│                                         │
-│           $1.24M                        │ ← Primary Value (32-40px bold)
-│                                         │
+│           $1.24M                        │ ← Primary value (32–40px bold, tabular-nums)
 │     ↑ 15.3% vs last month               │ ← Trend (semantic color + context)
-│                                         │
 │ ▁▂▃▄▅▆▇█▇▆  Last 12 weeks               │ ← Sparkline + timeframe
-│                                         │
 │ Target: $1.5M                           │ ← Goal context
-│ ████████████████░░░░  82.7%             │ ← Progress bar
-│                                         │
+│ ████████████████░░░░  82.7%             │ ← Progress toward target
 ├─────────────────────────────────────────┤
-│ 💡 On track to exceed Q4 target         │ ← Insight line
+│ 💡 On track to exceed Q4 target         │ ← Insight (earned)
 ├─────────────────────────────────────────┤
-│                      [View Details →]   │ ← CTA
+│                      [Forecast Q4 →]    │ ← CTA (earned, specific)
 └─────────────────────────────────────────┘
 ```
 
-### KPI Card Variants
+### Variants — pick by density and job
 
-**Minimal KPI** (for dense displays):
+**Minimal** (dense grids — value + label + trend only):
 ```
 ┌────────────────────────┐
 │ Revenue      $1.24M    │
@@ -96,83 +96,76 @@ Every widget should be specified using this structure:
 └────────────────────────┘
 ```
 
-**KPI with Comparison**:
+**Comparison** (this period vs last, side by side):
 ```
 ┌────────────────────────────────────────┐
 │ Conversion Rate                        │
-│                                        │
 │   This Month        Last Month         │
 │     4.8%              4.2%             │
 │   ████████          ███████            │
-│                                        │
-│ 💡 +0.6pp improvement from checkout    │
-│    redesign                            │
+│ 💡 +0.6pp from checkout redesign       │
 │                        [Analyze →]     │
 └────────────────────────────────────────┘
 ```
 
-**KPI with Breakdown**:
+**Breakdown** (one metric, split by dimension):
 ```
 ┌────────────────────────────────────────┐
 │ Total Users                    1.2M    │
-│                                        │
 │   Desktop    720K  ████████████  60%   │
 │   Mobile     420K  ███████       35%   │
 │   Tablet      60K  █              5%   │
-│                                        │
 │ 💡 Mobile growing fastest (+23% MoM)   │
 │                    [View by Device →]  │
 └────────────────────────────────────────┘
 ```
 
-**KPI with Alert State**:
+**Alert state** (threshold breached — value in error color, urgent CTA at top):
 ```
 ┌────────────────────────────────────────┐
-│ ⚠️ Error Rate                 ALERT    │  ← Alert badge
+│ ⚠️ Error Rate                 ALERT    │ ← Alert badge
 ├────────────────────────────────────────┤
-│                                        │
-│           2.4%                         │  ← Value in error color
+│           2.4%                         │ ← Value in error color
 │     ↑ 0.8% in last hour                │
-│                                        │
 │ Threshold: 1.5%  █████████████████░░   │
-│                                        │
-│ 💡 Spike correlates with deploy at     │
-│    14:32 UTC                           │
-│                                        │
-│ [View Logs →]  [Acknowledge]           │  ← Action CTAs
+│ 💡 Spike correlates with deploy 14:32  │
+│ [View Logs →]  [Acknowledge]           │ ← Action CTAs
 └────────────────────────────────────────┘
 ```
 
-## Chart Widgets: Complete Specification
+Semantic colors (success / warning / error / info) and the trend up/down/flat colors are
+**tokens — do not hardcode hex here**. Use the `--color-*` tokens from
+[design-system.md](design-system.md). Never signal by color alone: pair with an icon,
+arrow, or label (accessibility, design-system.md).
 
-### Line/Area Chart Widget
+---
+
+## Chart widgets
+
+### Line / area chart
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │ Revenue Trend                                    [⤢] [⋮]   │
-│ [Daily ▼] [Last 30 Days ▼]                                  │ ← Filters
+│ [Daily ▼] [Last 30 Days ▼]                                  │ ← Filters (earned)
 ├─────────────────────────────────────────────────────────────┤
 │ 💡 Revenue peaked on Black Friday ($2.4M), 3x normal       │ ← Insight
 ├─────────────────────────────────────────────────────────────┤
 │     $2.5M ┤                         ╱╲                      │
-│           │                        ╱  ╲                     │
-│     $2.0M ┤                       ╱    ╲                    │
-│           │              ╱╲      ╱      ╲     Annotation:   │
-│     $1.5M ┤    ╱╲       ╱  ╲    ╱        ╲   "Black Friday" │
-│           │   ╱  ╲     ╱    ╲  ╱          ╲                 │
-│     $1.0M ┤  ╱    ╲   ╱      ╲╱            ╲────            │
-│           │ ╱      ╲ ╱                                      │
+│     $2.0M ┤              ╱╲        ╱  ╲   ← "Black Friday"  │
+│     $1.5M ┤    ╱╲       ╱  ╲    ╱      ╲     annotation     │
+│     $1.0M ┤  ╱    ╲   ╱      ╲╱          ╲────             │
 │     $0.5M ┤╱        ╲                                       │
 │           └──────────────────────────────────────────────   │
 │            Nov 1    Nov 8    Nov 15   Nov 22   Nov 29       │
 ├─────────────────────────────────────────────────────────────┤
-│ ● Revenue ── Avg ($1.2M)  vs Last Year (gray)               │ ← Legend
+│ ● Revenue ── Avg ($1.2M)  vs Last Year (gray)               │ ← Legend (multi-series)
 ├─────────────────────────────────────────────────────────────┤
 │ Total: $38.4M  |  Avg: $1.28M  |  Peak: $2.4M               │ ← Summary stats
 │                                    [View Daily Breakdown →] │ ← CTA
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### Funnel Chart Widget
+### Funnel
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │ Signup Funnel                             [This Week ▼] [⋮] │
@@ -180,60 +173,54 @@ Every widget should be specified using this structure:
 │ 💡 Biggest drop-off at Email Verification (42% abandon)    │
 │    Consider: reduce friction, add skip option               │ ← Actionable insight
 ├─────────────────────────────────────────────────────────────┤
-│                                                             │
 │  Visited       ████████████████████████████  10,000  100%   │
-│                           │                                 │
-│                          52%                    ← Drop-off  │
-│                           ▼                       labels    │
+│                          52% ▼                              │
 │  Signed Up     ██████████████████             5,200   52%   │
-│                           │                                 │
-│                          42%                                │
-│                           ▼                                 │
+│                          42% ▼                              │
 │  Verified      ██████████████                 3,016   30%   │
-│                           │                                 │
-│                          28%                                │
-│                           ▼                                 │
+│                          28% ▼                              │
 │  Activated     ██████████                     2,171   22%   │
-│                           │                                 │
-│                          35%                                │
-│                           ▼                                 │
+│                          35% ▼                              │
 │  Purchased     ███████                        1,411   14%   │
-│                                                             │
 ├─────────────────────────────────────────────────────────────┤
 │ Industry avg: 12%  │  Last month: 11%  │  Target: 18%       │ ← Context
-│                                                             │
 │ [View by Source →]  [View by Cohort →]  [Export →]          │ ← Multiple CTAs
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### Heatmap Widget
+Horizontal, rectangular, proportional — **never** the pointy default `FunnelChart`. Build
+details in [visualization.md §6](visualization.md).
+
+### Heatmap
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │ User Activity by Day & Hour                          [⤢]   │
 ├─────────────────────────────────────────────────────────────┤
-│ 💡 Peak activity: Tue-Thu 10am-12pm (3x average)           │
-│    Dead zone: Weekends before 10am                          │
+│ 💡 Peak: Tue-Thu 10am-12pm (3x avg). Dead: weekends <10am  │
 ├─────────────────────────────────────────────────────────────┤
 │         Mon   Tue   Wed   Thu   Fri   Sat   Sun             │
-│   6am   ░░    ░░    ░░    ░░    ░░    ░░    ░░              │
 │   8am   ▒▒    ▓▓    ▓▓    ▓▓    ▒▒    ░░    ░░              │
 │  10am   ▓▓    ██    ██    ██    ▓▓    ▒▒    ░░              │
 │  12pm   ▓▓    ██    ██    ██    ▓▓    ▒▒    ▒▒              │
 │   2pm   ▒▒    ▓▓    ▓▓    ▓▓    ▒▒    ▒▒    ▒▒              │
-│   4pm   ▒▒    ▒▒    ▒▒    ▒▒    ░░    ▓▓    ▓▓              │
 │   6pm   ░░    ░░    ░░    ░░    ░░    ██    ██              │
-│   8pm   ░░    ░░    ░░    ░░    ░░    ▓▓    ▓▓              │
-│                                                             │
-│    ░ Low (<100)  ▒ Medium (100-500)  ▓ High (500-1K)  █ Peak│ ← Legend
+│    ░ Low  ▒ Medium  ▓ High  █ Peak                         │ ← Legend
 ├─────────────────────────────────────────────────────────────┤
-│ Click any cell to see detailed activity log                 │
+│ Click any cell for the detailed activity log               │
 │                                   [Optimize Schedule →]     │ ← Action CTA
 └─────────────────────────────────────────────────────────────┘
 ```
 
-## Data Tables: Complete Specification
+Use a sequential color ramp (the data-viz palette in [design-system.md](design-system.md)),
+not arbitrary hues.
 
-### Interactive Data Table
+---
+
+## Interactive data table
+
+A table is a widget too — it earns an insight line and contextual, state-dependent row
+actions, not one blanket "View" button.
+
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
 │ Customer Orders                                              [⤢]   │
@@ -244,229 +231,99 @@ Every widget should be specified using this structure:
 │ Customer ▲    │ Status   │ Amount    │ Date       │ Actions        │
 ├───────────────┼──────────┼───────────┼────────────┼────────────────┤
 │ Acme Corp     │ ● Paid   │   $12,450 │ 2 hrs ago  │ [View] [⋮]     │
-│ TechStart Inc │ ◐ Pending│    $8,200 │ 1 day ago  │ [Review] [⋮]   │ ← Contextual CTA
+│ TechStart Inc │ ◐ Pending│    $8,200 │ 1 day ago  │ [Review] [⋮]   │ ← CTA by state
 │ GlobalCo      │ ● Paid   │   $24,100 │ 2 days ago │ [View] [⋮]     │
-│ StartupXYZ    │ ○ Draft  │    $3,400 │ 3 days ago │ [Edit] [⋮]     │ ← Different CTA by state
+│ StartupXYZ    │ ○ Draft  │    $3,400 │ 3 days ago │ [Edit] [⋮]     │ ← CTA by state
 ├───────────────┴──────────┴───────────┴────────────┴────────────────┤
 │ Showing 1-10 of 156  │  Total Value: $1.24M                        │
 │                                            ◀ 1 2 3 ... 16 ▶        │
-├─────────────────────────────────────────────────────────────────────┤
-│ [+ New Order]                              [View All Orders →]      │ ← CTAs
+│ [+ New Order]                              [View All Orders →]      │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-## Insight Text Patterns
+Amounts use `tabular-nums` and right-align (numeric craft, design-system.md). Status uses
+icon **plus** color, never color alone.
 
-### Headline Insights (What's the story?)
-```
-"Revenue up 23% — strongest quarter since Q2 2022"
-"Conversion dropped 15% after checkout redesign"
-"APAC now largest region, overtaking Americas for first time"
-"3 of 5 targets exceeded this month"
-```
+---
 
-### Callout Insights (What's notable?)
-```
-"⚠️ Unusual spike on March 15 — requires investigation"
-"📈 Tuesday is consistently highest-performing day"
-"🎯 On track to exceed annual target by 12%"
-"⏰ Response time improved 40% after optimization"
-```
+## Implementation conventions
 
-### Actionable Insights (What should I do?)
-```
-"💡 Consider: Schedule campaigns for Tue-Thu peak hours"
-"💡 Action needed: 23 orders pending review"
-"💡 Opportunity: APAC showing 3x growth — increase investment?"
-"💡 Risk: Churn rate trending up — review retention offers"
-```
+This file specifies *what* a widget contains. Translating that into code follows a few
+standing conventions — the exact APIs you confirm at build time, not from memory.
 
-### Comparative Insights (How does it compare?)
-```
-"23% above industry average (18%)"
-"Outperforming target by $200K (113% achievement)"
-"Down 5% vs. same period last year"
-"Rank improved from #4 to #2 among competitors"
-```
+**Detect, then match the project's chart library.** Run the project-context scan first
+(`package.json`, a sample chart component). If the project already uses Recharts, Tremor,
+visx, Chart.js, ECharts, Nivo, or a charting wrapper, **inherit it** — build every widget
+in that library so the dashboard feels native. Don't introduce a second general-purpose
+chart lib alongside an existing one.
 
-## CTA Patterns
+**Greenfield default: Recharts + Tremor.** With no existing lib, reach for **Recharts** as
+the base (line, area, bar, scatter, radar, the composable primitives) and **Tremor** for
+complex or composed widgets — KPI cards with deltas, chart-plus-insight combos, bullets,
+trackers — where its higher-level components save you from re-composing legends, value
+formatting, and badges by hand. Pull a heavier dep (`@nivo/*`) only when the base stack
+genuinely can't express a chart (e.g. sankey, sunburst), never as a casual second option.
 
-### Every Widget Needs a Path Forward
+**Use the library's vocabulary and its sane defaults.** Each chart maps to a small set of
+primitives a practitioner reaches for — composable axis / grid / tooltip / legend
+sub-components, a responsive container that owns sizing, accessor or `dataKey` props that
+bind series to fields, and per-series color set from your tokens rather than the library's
+stock palette. Lean on the defaults that are already good (responsive sizing, tooltips,
+animation easing) and override only where this skill is opinionated: the funnel (never the
+pointy built-in), `tabular-nums` on figures, axis formatting, and direct labels over a
+legend where it reads cleaner.
 
-| Widget Type | Primary CTA | Secondary CTAs |
-|-------------|-------------|----------------|
-| KPI Card | View Details → | Compare, History |
-| Line Chart | View Full Analysis → | Export, Expand |
-| Funnel | View by Segment → | Export, Optimize |
-| Table | View All → | Export, Add New |
-| Heatmap | Drill into Cell | Export, Schedule |
-| Radar | Full Comparison → | Export |
+**The chart→primitive mapping is canonical in
+[visualization.md §6](visualization.md)** — which Recharts/Tremor component (or hand-built
+CSS grid) backs each chart type, including how to compose a bullet, a clean funnel, a
+waterfall, a bump. Don't repeat it; follow it.
 
-### CTA Placement
-```
-Standard: Bottom-right of widget
-Contextual: Inline with relevant data (e.g., "Review" button on pending row)
-Urgent: Top of widget with alert styling
-```
+**Build against CURRENT docs.** Chart-library APIs drift — prop renames, Tremor's shadcn
+migration, new composition patterns. At build time, pull the live docs for the stack in
+play (Recharts, Tremor, shadcn charts) via context7 or the web before writing chart code,
+and verify component names, required props, and the current recommended composition. This
+is non-optional; it's where memorized APIs silently break the build. (Detailed in
+[visualization.md §7](visualization.md).)
 
-### CTA Wording
-```
-❌ "Click here"
-❌ "More"
-✓  "View Full Analysis →"
-✓  "See 23 Pending Orders →"
-✓  "Investigate Anomaly →"
-✓  "Export to Excel"
-```
+**Tokens, not literals.** Series colors, semantic status colors, surfaces, text, and
+spacing all come from the tokens in [design-system.md](design-system.md). Reference them;
+don't paste hex into widget code.
 
-## Colors: Semantic System
+---
 
-### Standard Semantic Colors
-```css
-/* Status Colors */
---color-success: #10B981;     /* Green - positive, complete, on-track */
---color-warning: #F59E0B;     /* Amber - attention, pending, caution */
---color-error: #EF4444;       /* Red - negative, failed, critical */
---color-info: #3B82F6;        /* Blue - informational, neutral action */
+## Density limits — don't cram
 
-/* Trend Colors */
---color-trend-up: #10B981;    /* Green - improvement */
---color-trend-down: #EF4444;  /* Red - decline */
---color-trend-flat: #6B7280;  /* Gray - stable */
+Rich does not mean crowded. A widget that tries to be six things reads as none. These are
+the ceilings; respect them by promoting depth to a drill-down, not by shrinking type.
 
-/* Data Colors (for series) */
---color-data-1: #3B82F6;      /* Primary series */
---color-data-2: #8B5CF6;      /* Secondary series */
---color-data-3: #EC4899;      /* Tertiary series */
---color-data-4: #F59E0B;      /* Quaternary series */
---color-data-5: #10B981;      /* Quinary series */
-```
+### Cramping anti-patterns
 
-### Color Usage Rules
-- **Never use color alone** — always pair with icons, patterns, or text
-- **Limit palette** — max 5-6 data colors
-- **Semantic consistency** — green always means good, red always means attention
-- **Sufficient contrast** — 4.5:1 for text, 3:1 for graphics
+| Anti-pattern | Example | Fix |
+|--------------|---------|-----|
+| Multi-element cramping | Insight + funnel + CTA jammed into a KPI-sized card | Expand the card or split into two widgets |
+| Information overload | >4 distinct facts in one KPI card | Prioritize; push the rest to drill-down |
+| Missing whitespace | Sections touching with no padding | Consistent internal spacing (design-system.md) |
+| Competing focal points | Several bold/large elements at once | One focal point per widget |
 
-## Widget Specification Template
+### Complexity ceiling by widget size
 
-Use this template when designing any widget:
-
-```markdown
-## Widget: [Name]
-
-### Purpose
-- Question it answers: [e.g., "How is revenue trending?"]
-- Key decision it supports: [e.g., "Forecast adjustments"]
-
-### Header
-- Title: [Widget title]
-- Icon: [Optional icon]
-- Filters: [Inline filter options]
-- Actions menu: [Export, Expand, etc.]
-
-### Insight Section
-- Headline insight: [Dynamic text, e.g., "Revenue peaked Friday..."]
-- Insight type: [Story / Callout / Actionable / Comparative]
-- When to show: [Always / When anomaly / When threshold crossed]
-
-### Visualization
-- Chart type: [Line, Funnel, Heatmap, etc.]
-- Data fields: [What data powers it]
-- Axes: [X and Y axis definitions]
-- Annotations: [Key events to mark]
-
-### Legend & Context
-- Legend items: [Series definitions]
-- Comparison context: [vs. target, vs. last period]
-- Summary stats: [Total, Avg, Peak, etc.]
-
-### Interactivity
-- Hover tooltip: [What shows on hover]
-- Click action: [Drill-down destination]
-- Filter behavior: [How filters affect this widget]
-
-### CTA Section
-- Primary CTA: [Text and destination]
-- Secondary CTAs: [Additional actions]
-
-### States
-- Loading: [Skeleton/spinner description]
-- Empty: [Message and suggested action]
-- Error: [Message and recovery action]
-
-### Colors
-- Primary color: [Hex]
-- Series colors: [Hex array]
-- Semantic colors: [Success/Warning/Error usage]
-```
-
-## Complete Widget Checklist
-
-Before considering any widget done:
-
-### Content
-- [ ] Title clearly describes the data
-- [ ] Insight text explains the meaning
-- [ ] Legend present for multi-series data
-- [ ] Context line shows comparison (vs. target/period)
-- [ ] Summary stats provided where useful
-
-### Actions
-- [ ] Primary CTA defined (drill-down path)
-- [ ] Secondary actions available (export, expand)
-- [ ] Contextual actions for data rows (view, edit, etc.)
-- [ ] Tooltips provide additional detail on hover
-
-### Visual
-- [ ] Colors follow semantic system
-- [ ] Sufficient contrast for accessibility
-- [ ] Consistent with other widgets in dashboard
-- [ ] Annotations highlight key points
-
-### States
-- [ ] Loading skeleton defined
-- [ ] Empty state with helpful message
-- [ ] Error state with recovery option
-
-## Widget Density Anti-Patterns
-
-### Cramping Indicators
-
-Avoid these density problems:
-
-| Anti-Pattern | Example | Fix |
-|-------------|---------|-----|
-| Multi-element cramping | Insight + funnel + CTA in KPI-sized card | Expand card or split elements |
-| Information overload | >4 distinct pieces of info in one KPI card | Prioritize; move details to drill-down |
-| Missing whitespace | Widget sections touching without padding | Add consistent internal spacing |
-| Competing for attention | Multiple bold/large elements in same widget | Single focal point per widget |
-
-### Widget Complexity Limits
-
-Each widget should have clear limits:
-
-| Widget Size | Max Elements | Recommended |
+| Widget size | Max elements | Comfortable |
 |-------------|--------------|-------------|
-| Small KPI card | 3 elements (value, label, trend) | 2-3 |
-| Standard card | 5 elements (title, insight, visual, context, CTA) | 4-5 |
-| Large card | 7 elements (add legend, filters) | 5-6 |
-| Full-width panel | 10 elements | 7-8 |
+| Small KPI tile | 3 (value, label, trend) | 2–3 |
+| Standard card | 5 (title, insight, visual, context, CTA) | 4–5 |
+| Large card | 7 (add legend, filters) | 5–6 |
+| Full-width panel | 10 | 7–8 |
 
-### Breathing Room Checklist
+### The squint test
 
-- [ ] Each section of the widget has visible separation
-- [ ] Text is not touching chart edges
-- [ ] CTA has clear tap/click target with surrounding space
-- [ ] Insight text has room to breathe (not crammed under title)
-- [ ] Legend items are spaced for readability
+Before finalizing any widget:
 
-### Density Self-Check
+> **Squint at it. Can you identify 3 or fewer focal points?**
 
-Before finalizing any widget, ask:
-> "If I squint at this widget, can I identify 3 or fewer focal points?"
+If no, it's too dense. In priority order: (1) move detail to hover or a drill-down, (2)
+increase the card size, (3) drop the lowest-value element — never shrink type or kill
+whitespace to make it fit.
 
-If no → the widget is too dense. Either:
-1. Remove lower-priority elements
-2. Increase card size
-3. Move details to hover/drill-down
+Breathing room checklist: each section visibly separated · text not touching chart edges ·
+CTA has a clear, padded tap target · insight not crammed under the title · legend items
+spaced to read.

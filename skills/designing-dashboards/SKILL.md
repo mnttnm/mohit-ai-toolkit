@@ -1,325 +1,180 @@
 ---
 name: designing-dashboards
-description: "Design modern, actionable dashboards through collaborative workflow.\
-  \ Use for any dashboard task\u2014creating new dashboards, revamping existing ones,\
-  \ choosing layouts, selecting charts, designing widgets, or validating designs.\
-  \ Coordinates requirements, strategy, design, and validation phases with user checkpoints.\
-  \ Never assumes preferences; always collaborates."
+description: Design modern, actionable dashboards through a collaborative, taste-aware workflow. Use for any dashboard task—building new dashboards, revamping existing ones, choosing layouts, selecting charts, designing widgets, deriving a theme, or validating a design. Acts as a navigator: pitches options, adapts to the user's taste and codebase, keeps rich widgets that earn their place, and verifies the result by measurement—never assumes preferences.
 ---
 
 # Dashboard Design Skill
 
-A collaborative partner for creating modern, actionable dashboards. **Never assume—always ask.**
+A **navigator, not a prescriber.** This skill guides you toward a well-made dashboard
+by pitching suggestions and adapting to the user's taste, their codebase, and their
+audience. It keeps the rich, interpretive widgets that separate a real dashboard from a
+generic one — and it earns every element rather than padding or stripping by reflex.
 
-## How This Skill Works
+**Two operating beliefs:**
+- **Rich by intent, not by reflex.** Charts, insights, and composed widgets are the
+  value. Keep them whenever they do real work; cut only the *gratuitous*.
+- **Verify, don't attest.** A dashboard isn't done because a checklist is ticked — it's
+  done when the rendered output has been measured.
 
-This skill uses progressive disclosure. The core workflow and principles are here; detailed guidance is in reference files loaded when needed.
+## How this skill works
 
-**At each phase, consult the relevant reference file:**
+Progressive disclosure: the workflow and principles live here; depth lives in reference
+files, loaded when a phase needs them.
 
-| Phase | Reference File | Use When |
-|-------|---------------|----------|
-| Requirements | [requirements.md](requirements.md) | Starting a dashboard, gathering functional/visual preferences |
-| Strategy | [strategy.md](strategy.md) | Classifying dashboard type, prioritizing metrics |
-| Layout | [information-architecture.md](information-architecture.md) | Choosing layout patterns (hero, bento, magazine, etc.) |
-| Charts | [visualization.md](visualization.md) | Selecting chart types, writing insight text |
-| Aesthetics | [visual-design.md](visual-design.md) | Defining colors, typography, density |
-| Widgets | [components.md](components.md) | Building complete widget specifications |
-| States | [edge-states.md](edge-states.md) | Designing empty/loading/error states |
-| Quality | [validation.md](validation.md) | Final validation before delivery |
-
-Additional detailed references:
-- [chart-selection.md](chart-selection.md) — Comprehensive chart type guide
-- [design-tokens.md](design-tokens.md) — CSS design token system
-- [requirements-questions.md](requirements-questions.md) — Complete question library
-
----
-
-## Validation Checkpoints (Always Complete)
-
-These checkpoints should always be triggered. Skipping them leads to issues caught late and rework.
-
-| Checkpoint | When | What |
-|------------|------|------|
-| Checkpoint 5 | Before implementation | Conceptual validation against checklists |
-| Checkpoint 6 | After implementation | Visual testing in browser |
+| Phase | Reference | Use when |
+|-------|-----------|----------|
+| Requirements | [requirements.md](requirements.md) | Starting out; scanning the project; gathering only what's ambiguous |
+| Strategy | [strategy.md](strategy.md) | Classifying the dashboard, audience archetype → visualization density budget |
+| Layout | [information-architecture.md](information-architecture.md) | Layout patterns, launchpad/drill-down, dashboard-level interaction (filters, date range, URL state) |
+| Visualization | [visualization.md](visualization.md) | Right-medium check, chart selection, selection≠execution, chart→library mapping |
+| Design system | [design-system.md](design-system.md) | Tokens (single source), theme sourcing (light/dark · derive · vibe), numeric craft, dark mode |
+| Widgets | [components.md](components.md) | Widget anatomy as a menu; implementation conventions (Recharts + Tremor / project lib) |
+| States | [edge-states.md](edge-states.md) | Empty / loading / error — always required |
+| Validation | [validation.md](validation.md) | The measured loop: render → screenshot → contrast → breakpoints → scored rubric |
 
 ---
 
-## Five Modern Dashboard Principles
+## First: New or Revamp?
 
-Every dashboard embodies these principles:
+**Revamp (improving an existing dashboard) → audit first, then diff.** Don't design from
+blank. Audit the current dashboard widget-by-widget: *what does each one show, what
+decision does it support, what's weak or missing?* Diff that against the target, then
+improve. The existing layout is the **baseline to beat, not a template to copy.**
 
-### 1. Charts + Insights (Not Just Charts)
-```
-WRONG: Chart with only a title
-RIGHT: Chart with insight: "APAC drove 60% of growth, up 34% YoY"
-```
-Every visualization includes headline insights, context, and annotations.
+**New (greenfield) → go to Requirements.** Start from the audience and the questions the
+dashboard must answer.
 
-### 2. Appropriate Chart Variety
-```
-WRONG: Default to bar/line for everything
-RIGHT: Match chart type to data:
-  - Conversion data → Funnel chart
-  - Multi-attribute comparison → Radar chart
-  - Time × category patterns → Heatmap
-  - Flow between categories → Sankey diagram
-```
-
-### 3. Creative Layouts (Not Just Card Grids)
-```
-WRONG: Always "4 KPIs, 2 charts, 1 table"
-RIGHT: Consider the story:
-  - Hero layout: Large focal visualization
-  - Magazine layout: Narrative flow
-  - Hub & spoke: Central KPI with breakdowns
-  - Bento box: Mixed-size visual variety
-```
-
-### 4. Actionable Dashboards (Not Dead Ends)
-```
-WRONG: Static display only
-RIGHT: Every widget answers "What can I do next?"
-  - Primary CTA: "View Details →"
-  - Drill-down paths: Click region → see breakdown
-  - Quick actions: "Export", "Share", "Investigate"
-```
-
-### 5. Complete Widget Specifications
-```
-WRONG: "Put a line chart here"
-RIGHT: Chart + Title + Insight + Legend + Context + CTA + States
-```
+Either way, run the **project-context scan** early (see Principle 7).
 
 ---
 
-## Decision Classification
+## The three gates
 
-Before proceeding with ANY aspect, classify decisions:
+Lightweight collaboration — ask only what genuinely changes the design, then move.
 
-### Must Ask (User Preference Required)
-- Visual theme (dark/light/brand colors)
-- Design aesthetic (minimal, data-dense, modern, corporate)
-- Color palette preferences
-- Typography preferences
-- Layout density preference
-- Metric prioritization
+| Gate | When | What |
+|------|------|------|
+| **Clarify** | Before strategy | Resolve only *genuine* ambiguity (audience, theme source, must-show metrics). Don't interrogate. |
+| **Propose** | Before building | Pitch strategy + layout + theme sourcing as options; confirm direction. |
+| **Validate** | After building | Run the **measured loop** (validation.md), then the advisory subtraction pass and scored rubric. |
 
-### Should Ask (Offer Options)
-- Dashboard type classification (confirm recommendation)
-- Layout structure options
-- Chart type alternatives
-- Mobile/responsive strategy
-
-### Can Decide (Best Practice Applies)
-- Accessibility compliance (always WCAG 2.1 AA)
-- Data-ink ratio principles
-- Contrast ratios
-- Grid alignment
+Scale the ceremony to the task: a quick concept needs one Clarify question; a
+production revamp warrants all three gates in full.
 
 ---
 
-## Collaboration Workflow
+## Core principles
 
-### Checkpoint 1: Initial Analysis
+**1. Charts + insights.** Every visualization that stays carries a headline insight that
+adds what the chart doesn't already show — a cause, comparison, anomaly, implication, or
+next action. *Bar: would a sharp analyst bother saying this out loud?* If the best you
+can write restates the axis ("Thursday was highest"), drop the band and let the chart
+speak. No boilerplate ("steady growth, +2%").
 
-When user makes request, I:
-1. Acknowledge the request
-2. Identify what's clear vs. unclear
-3. List decisions needing user input
-4. Ask targeted questions
+**2. Right medium, then right chart — a guard, not a cull.** Rich widgets are the
+default; keep any that do real work. Use the medium check only to catch *gratuitous*
+visuals (decoration with no decision behind it): `number/delta → sentence → table →
+chart → headline + link`. Then match the chart type to the data's question — and verify
+it against the *actual* values (the **data-fit check**: values that render visually
+identical, e.g. 91/91/95/102, become numbers + deltas, not bars).
 
-**Reference**: [requirements.md](requirements.md) for question sequences and conversation patterns.
+**3. Creative, purposeful layouts.** Escape card-grid monotony (hero, bento, magazine,
+hub-and-spoke). The dashboard is a **launchpad** — headline + entry points — not an
+everything-page; push depth to dedicated views.
 
-```
-"I'd be happy to help! Based on your request, I understand:
-✓ [What's clear]
-? I need to clarify:
+**4. Actionable.** Every widget answers "what can I do next?" through *earned* CTAs and
+real drill-down destinations — never a generic "View details".
 
-1. **Visual Direction**: Clean/minimal, data-dense, modern, or corporate?
-2. **Theme**: Light mode, dark mode, or both?
-3. **Top Priorities**: Which 1-2 metrics are most critical?"
-```
+**5. Earn every element.** Widget anatomy is a **menu, not a mandate**: title, insight,
+visual, legend, context, and CTA are each included only when they pull their weight.
+Loading / empty / error states are the exception — always required.
 
-### Checkpoint 2: Requirements Confirmation
+**6. Selection ≠ execution.** Picking the right chart isn't enough; render it *well*.
+Flag known pitfalls (recharts' default `FunnelChart` is a pointy triangle — use a clean
+horizontal stepped funnel), use `tabular-nums` for figures, avoid clipped axes, and
+ground the build in *current* library conventions (pull live docs) rather than memory.
 
-Before moving to strategy:
+**7. Inherit the project's vocabulary; own the quality decisions.** Run a light
+**project-context scan** (`package.json`, Tailwind/token config, one sample component).
+*Inherit* theme, chart library, component primitives, and framework conventions so the
+dashboard feels native. *Own* layout, chart selection, the insight layer, and edge
+states — that's the improvement. Follow the **what** (their choices), upgrade the
+**how** (current best practice). **Ask** which way to lean, and **flag** conflicts
+rather than silently abiding or overriding.
 
-**Reference**: [requirements.md](requirements.md) for complete checklist.
-
-```
-"Here's what I've gathered:
-[Requirements summary]
-
-**Functional**: Purpose, users, metrics, comparisons
-**Visual**: Theme, aesthetic, brand, density
-
-Does this accurately capture your needs?"
-```
-
-### Checkpoint 3: Strategy Proposal
-
-Before moving to design:
-
-**Reference**: [strategy.md](strategy.md) for type classification and prioritization.
-
-```
-"Based on your requirements, here's my recommended approach:
-
-**Dashboard Type**: [Type] — because [reasoning]
-**Metric Priority**:
-1. [Critical] — Top-left, largest display
-2. [Important] — Top-right
-3. [Supporting] — Lower sections
-
-Does this align with your vision?"
-```
-
-### Checkpoint 4: Design Options
-
-Present visual options before finalizing:
-
-**References**:
-- [information-architecture.md](information-architecture.md) — Layout patterns
-- [visualization.md](visualization.md) — Chart selection
-- [visual-design.md](visual-design.md) — Aesthetics
-- [components.md](components.md) — Widget specifications
-
-```
-"For the visual design, I have options:
-
-**Layout Pattern Options:**
-A) Hero Layout — Large focal visualization
-B) Bento Box — Mixed-size cards
-C) Magazine — Narrative flow
-D) Hub & Spoke — Central KPI with breakdowns
-
-**Chart Style Options:**
-A) Insightful (charts with headlines and context)
-B) Minimal (clean, essential data only)
-C) Detailed (annotations, reference lines)
-
-Which combination appeals to you?"
-```
-
-### Checkpoint 5: Conceptual Design Validation
-
-Before implementation, validate the design against checklists:
-
-**References**:
-- [validation.md](validation.md) — Conceptual validation checklist
-- [visualization.md](visualization.md) — Data-appropriate visualization check
-- [components.md](components.md) — Widget checklist and density guidelines
-
-```
-"Before I implement, let me validate the design:
-
-**Widget Checklist (Theoretical Pass):**
-✓ Each widget has: title, insight, visual, context, CTA, states
-✓ Data-appropriate visualization check completed
-✓ Layout density reviewed against anti-patterns
-✓ All required elements accounted for
-
-**Design Validation:**
-- Chart types match data characteristics
-- Widgets won't be cramped at target sizes
-- Visual hierarchy is clear
-
-Does this design direction look correct before I proceed with implementation?"
-```
-
-This is a conceptual/checklist review — you're validating the PLAN, not the rendered output.
-
-### Checkpoint 6: Visual Testing & Delivery
-
-After implementation is complete, view the dashboard in browser:
-
-**Reference**: [validation.md](validation.md) for visual testing checklist.
-
-```
-"Now that implementation is complete, I'll review the rendered output:
-
-**Visual Testing:**
-✓ Viewed at intended viewport size
-✓ Overall visual balance and breathing room verified
-✓ Each widget checked against density guidelines
-✓ Visualizations differentiate actual data values
-✓ User flow walked through end-to-end
-✓ Edge states tested with real-world scenarios
-
-**What I implemented:**
-- [Key decision 1]: [What was chosen]
-- [Key decision 2]: [What was chosen]
-
-**Final Verification:**
-✓ Requirements met
-✓ Visual preferences honored
-✓ Accessibility compliant
-✓ Edge states working
-
-What would you like to adjust?"
-```
-
-Review the complete dashboard first, then check each widget within it.
+**8. Verify by measurement, not checkbox.** Validation renders and *measures*: screenshot
+the build, check data-differentiation on the real values, measure contrast on the
+*actual* palette, test breakpoints. Self-review is the fallback only when no
+browser/harness is available.
 
 ---
 
-## Anti-Patterns to Avoid
+## Project Context: inherit / own / flag
 
-### Layout Anti-Patterns
-- Always defaulting to "4 KPIs + 2 charts + table"
-- Every widget same size in a grid
-- Metrics crammed into top row without breathing room
+One scan feeds every "inherit" decision — and the same scan powers "derive theme."
 
-### Chart Anti-Patterns
-- Using bar charts for everything
-- Chart with only a title, no insight text
-- Plain chart without comparison context
+| Concern | Stance | Note |
+|---|---|---|
+| Theme / design tokens | **Inherit** | Derive from project; else the light/dark default |
+| Chart library | **Inherit** | Match existing; don't add a 2nd. Greenfield default: **Recharts + Tremor** for complex/composed widgets |
+| Component primitives | **Inherit** | Build widgets from shadcn / MUI / etc. when present |
+| Framework conventions | **Inherit** | File structure, TS, Tailwind-vs-CSS, icons |
+| Information architecture / layout | **Own** | The old layout is the baseline to beat |
+| Chart selection | **Own** | Apply the medium + data-fit checks |
+| Insight + actionability layer | **Own** | Usually absent — the main value-add |
+| Edge states, motion, hierarchy, density | **Own** | Elevate beyond the baseline |
 
-### Actionability Anti-Patterns
-- Dashboard as dead-end display
-- "View Details" as only generic action
-- No drill-down paths
-
-### Widget Anti-Patterns
-- Missing legends on multi-series charts
-- No loading/empty/error states
-- Incomplete specifications
-
-### Process Anti-Patterns
-- Applying visual defaults without mentioning them
-- Skipping straight to execution on subjective choices
-- Assuming user wants "best practices" over their preferences
-- Proceeding without confirming understanding
+> **Ask the user:** *"Match your project's existing conventions, or want me to push a
+> fresher direction?"* — the answer materially changes output quality.
 
 ---
 
-## Quick Reference: When to Use Each File
+## Decision classification
 
-| User Says... | Consult |
-|--------------|---------|
-| "Create a dashboard" | [requirements.md](requirements.md) → full workflow |
-| "What type of dashboard?" | [strategy.md](strategy.md) |
-| "What layout should I use?" | [information-architecture.md](information-architecture.md) |
-| "What chart for this data?" | [visualization.md](visualization.md) |
-| "What colors/fonts?" | [visual-design.md](visual-design.md) |
-| "Design this widget" | [components.md](components.md) |
-| "What about empty states?" | [edge-states.md](edge-states.md) |
-| "Review before delivery" | [validation.md](validation.md) |
+**Must ask (preference genuinely changes the output):** theme source (derive from
+project / describe a vibe / default light+dark), inherit-vs-own lean, audience archetype,
+the 1–2 must-show metrics.
+
+**Should ask (offer options, recommend one):** dashboard type, layout pattern, chart
+alternatives where the data fits more than one.
+
+**Can decide (best practice applies):** accessibility (WCAG 2.1 AA), data-fit check,
+contrast, grid alignment, tabular figures, earned-element gating.
+
+Don't ask about things the project or data already answers — and never ask a question
+whose answer wouldn't change what you build.
 
 ---
 
-## Output Templates
+## Anti-patterns to avoid
 
-### Requirements Document
-See [requirements.md](requirements.md) for complete template.
+**Layout** — defaulting to "4 KPIs + 2 charts + table"; every widget the same size;
+cramming depth that belongs on a drill-down page.
 
-### Strategic Brief
-See [strategy.md](strategy.md) for complete template.
+**Visualization** — a chart with only a title (no earned insight); a chart whose values
+render visually identical (use numbers); ≥3 widgets all collapsing to horizontal bars
+(differentiate one); the pointy default funnel.
 
-### Widget Specification
-See [components.md](components.md) for complete template.
+**Insight** — boilerplate that restates the axis; an insight band on every widget out of
+habit; a **loose colored insight sentence** styled like the captions around it (contain it in
+a banner); **surfacing an insight the data already makes obvious** instead of gating it behind
+a "Show insights" reveal. (See design-system.md → Surfacing insights.)
 
-### Validation Report
-See [validation.md](validation.md) for complete template.
+**Color & attention** — everything colored for emphasis, so nothing reads as urgent; a warm
+accent (amber/orange) used as the primary bar fill so the whole page runs "hot"; alert-red on
+more than the 1–2 truly urgent items; an advisory callout colored like an alarm. Keep a calm
+neutral baseline; reserve red for genuine alerts. (See design-system.md → Attention hierarchy.)
+
+**Actionability** — dead-end displays; "View details" as the only action.
+
+**Process** — interrogating the user through long question scripts; applying the generic
+Tailwind-blue/Inter default as if it were a choice; stripping rich widgets by reflex in
+the name of "simplicity"; self-attesting validation without rendering.
+
+---
+
+## Output templates
+
+Requirements brief → [requirements.md](requirements.md) · Strategy brief →
+[strategy.md](strategy.md) · Widget spec → [components.md](components.md) · Validation
+report → [validation.md](validation.md).
