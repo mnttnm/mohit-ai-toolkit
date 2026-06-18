@@ -30,7 +30,7 @@ When using `--skill <name>`, use the skill's frontmatter `name` (the identifier 
 
 | Skill | Use it for |
 | --- | --- |
-| `designing-dashboards` | Designing modern, actionable dashboards through requirements, strategy, layout, chart selection, and validation. |
+| `designing-dashboards` | Designing modern, actionable dashboards as a taste-aware navigator — pitching options, adapting to your codebase, surfacing earned insights, and verifying by measurement. |
 | `ecommerce-conversion-audit` | Auditing ecommerce PDPs, home pages, nudges, offers, trust signals, and data readiness for faster purchase decisions. |
 | `harvest-feed` | Turning a work session into publishable feed entries for a digital garden. |
 | `interaction-design` | Microinteractions, motion, loading states, transitions, and feedback patterns. |
