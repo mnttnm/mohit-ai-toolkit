@@ -1,6 +1,6 @@
 ---
 name: designing-dashboards
-description: Design modern, actionable dashboards through a collaborative, taste-aware workflow. Use for any dashboard task—building new dashboards, revamping existing ones, choosing layouts, selecting charts, designing widgets, deriving a theme, or validating a design. Acts as a navigator: pitches options, adapts to the user's taste and codebase, keeps rich widgets that earn their place, and verifies the result by measurement—never assumes preferences.
+description: "Design modern, actionable dashboards through a collaborative, taste-aware workflow. Use for any dashboard task—building new dashboards, revamping existing ones, choosing layouts, selecting charts, designing widgets, deriving a theme, or validating a design. Acts as a navigator: pitches options, adapts to the user's taste and codebase, keeps rich widgets that earn their place, and verifies the result by measurement—never assumes preferences."
 ---
 
 # Dashboard Design Skill
